@@ -1,5 +1,6 @@
 import React from 'react';
 import { Facebook, Twitter, Instagram, Youtube, Mail, MapPin, Phone } from 'lucide-react';
+import Link from 'next/link';
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -15,36 +16,36 @@ const Footer = () => {
                 Revolutionizing healthcare access through technology.
               </p>
               <div className="flex space-x-4">
-                <a href="#" className="text-blue-200 hover:text-white transition-colors">
+                <Link href="#" className="text-blue-200 hover:text-white transition-colors">
                   <Facebook className="w-5 h-5" />
-                </a>
-                <a href="#" className="text-blue-200 hover:text-white transition-colors">
+                </Link>
+                <Link href="#" className="text-blue-200 hover:text-white transition-colors">
                   <Twitter className="w-5 h-5" />
-                </a>
-                <a href="#" className="text-blue-200 hover:text-white transition-colors">
+                </Link>
+                <Link href="#" className="text-blue-200 hover:text-white transition-colors">
                   <Instagram className="w-5 h-5" />
-                </a>
-                <a href="#" className="text-blue-200 hover:text-white transition-colors">
+                </Link>
+                <Link href="#" className="text-blue-200 hover:text-white transition-colors">
                   <Youtube className="w-5 h-5" />
-                </a>
+                </Link>
               </div>
             </div>
 
             <div className="hidden md:block">
               <h3 className="text-lg font-semibold mb-4">Quick Links</h3>
               <ul className="space-y-3">
-                <li><a href="#" className="text-blue-200 hover:text-white transition-colors">Find a Doctor</a></li>
-                <li><a href="#" className="text-blue-200 hover:text-white transition-colors">Book Appointment</a></li>
-                <li><a href="#" className="text-blue-200 hover:text-white transition-colors">Health Feed</a></li>
+                <li><Link href="#" className="text-blue-200 hover:text-white transition-colors">Find a Doctor</Link></li>
+                <li><Link href="#" className="text-blue-200 hover:text-white transition-colors">Book Appointment</Link></li>
+                <li><Link href="#" className="text-blue-200 hover:text-white transition-colors">Health Feed</Link></li>
               </ul>
             </div>
 
             <div className="hidden md:block">
               <h3 className="text-lg font-semibold mb-4">Support</h3>
               <ul className="space-y-3">
-                <li><a href="#" className="text-blue-200 hover:text-white transition-colors">Help Center</a></li>
-                <li><a href="#" className="text-blue-200 hover:text-white transition-colors">Privacy Policy</a></li>
-                <li><a href="#" className="text-blue-200 hover:text-white transition-colors">Terms of Service</a></li>
+                <li><Link href="#" className="text-blue-200 hover:text-white transition-colors">Help Center</Link></li>
+                <li><Link href="#" className="text-blue-200 hover:text-white transition-colors">Privacy Policy</Link></li>
+                <li><Link href="#" className="text-blue-200 hover:text-white transition-colors">Terms of Service</Link></li>
               </ul>
             </div>
 
