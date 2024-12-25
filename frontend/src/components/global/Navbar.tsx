@@ -17,11 +17,11 @@ const Navbar = () => {
 
   return (
     <>
-      <nav className={`fixed w-full z-[100] transition-all duration-300 ${isScrolled ? 'bg-white/95 backdrop-blur-sm shadow-lg' : 'bg-white'
+      <nav className={`fixed top-0 w-full z-[100] transition-all duration-300 ${isScrolled ? 'bg-white/95 backdrop-blur-sm shadow-lg' : 'bg-white'
         }`}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-20">
-            <div className="flex-shrink-0 flex items-center gap-3">
+            <a href='/' className="flex-shrink-0 flex items-center gap-3">
               <Image
                 src="/icons/logo.png"
                 alt="ICDCIT logo"
@@ -32,7 +32,7 @@ const Navbar = () => {
               <h1 className="text-2xl font-bold text-blue-600">
                 ICDCIT
               </h1>
-            </div>
+            </a>
 
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
