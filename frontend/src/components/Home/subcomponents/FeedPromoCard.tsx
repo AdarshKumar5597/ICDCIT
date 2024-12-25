@@ -1,8 +1,23 @@
+"use client";
+
 import { Bookmark, Clock, Heart } from 'lucide-react'
 import Image from 'next/image'
-import React from 'react'
+import React, { useState } from 'react'
 
 const FeedPromoCard = () => {
+    const [isLiked, setIsLiked] = useState(false)
+    const [isBookmarked, setIsBookmarked] = useState(false)
+    const [likeCount, setLikeCount] = useState(248)
+
+    const handleLike = () => {
+        setIsLiked(!isLiked)
+        setLikeCount(prev => isLiked ? prev - 1 : prev + 1)
+    }
+
+    const handleBookmark = () => {
+        setIsBookmarked(!isBookmarked)
+    }
+
     return (
         <div className="relative w-full">
             <div className="absolute hidden lg:block w-1/4 aspect-square max-w-24 top-8 -right-4 bg-blue-100 rounded-full opacity-50"></div>
@@ -34,10 +49,20 @@ const FeedPromoCard = () => {
                                 <Clock size={14} />
                                 <span>5 min read</span>
                             </div>
-                            <div className="flex items-center gap-1">
-                                <Heart size={14} />
-                                <span>248</span>
-                            </div>
+
+
+
+
+                            <button
+                                onClick={handleLike}
+                                className="flex items-center gap-1 transition-all duration-200 ease-in-out"
+                            >
+                                <Heart
+                                    size={14}
+                                    className={`transition-all duration-200 ${isLiked ? 'fill-red-500 text-red-500 scale-110' : 'text-gray-500'}`}
+                                />
+                                <span className={`${isLiked ? 'text-red-500' : 'text-gray-500'}`}>{likeCount}</span>
+                            </button>
                         </div>
                     </article>
 
@@ -49,8 +74,16 @@ const FeedPromoCard = () => {
                             <div className="font-medium text-sm text-gray-900">Dr. Rachel Smith</div>
                             <div className="text-xs text-gray-500">Cardiologist, MD</div>
                         </div>
-                        <button className="ml-auto">
-                            <Bookmark size={18} className="text-blue-500" />
+
+
+                        <button
+                            onClick={handleBookmark}
+                            className="ml-auto transition-all duration-200 ease-in-out"
+                        >
+                            <Bookmark
+                                size={18}
+                                className={`transition-all duration-200 ${isBookmarked ? 'fill-blue-500 text-blue-500 scale-110' : 'text-blue-500'}`}
+                            />
                         </button>
                     </div>
 

@@ -1,114 +1,121 @@
-import React from 'react';
+"use client";
+
+import React, { useState } from 'react';
 import Link from "next/link";
+import { Eye, EyeOff } from 'lucide-react';
 
 const Page = () => {
-    const stats = [
-        {
-            value: '4.9',
-            label: 'Average platform specialists rating',
-        },
-        {
-            value: 'HHS',
-            label: 'All goverment licences and serticates',
-        },
-        {
-            value: '2M+',
-            label: 'Online-consultations number last year',
-        }
-    ];
+    const [showPassword, setShowPassword] = useState(false);
 
     return (
-        <div className="bg-gradient-to-br from-blue-50 to-white min-h-[100vh] mt-20 px-4 sm:px-6 lg:px-8">
-            <div className="max-w-7xl mx-auto pt-12 pb-16 sm:pt-16 lg:pt-20">
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-                    {/* Left Column - Content */}
-                    <div>
-                        <h1 className="text-4xl sm:text-5xl font-bold text-blue-950 leading-tight mb-4">
-                            Save time.
-                            <br />
-                            Healthcare online
-                        </h1>
-                        <p className="text-gray-600 text-lg mb-8">
-                            Your one-stop solution for all your healthcare needs, anytime, anywhere.
-                        </p>
+        <div className="bg-gradient-to-br from-blue-50 to-white min-h-screen pt-24 px-4 sm:px-6 lg:px-8">
+            <div className="max-w-6xl w-full mx-auto grid lg:grid-cols-2 gap-12 items-center">
+                <div className="text-center lg:text-left">
+                    <h1 className="text-4xl font-bold text-blue-950 mb-4">
+                        Welcome to HealthCare Online
+                    </h1>
+                    <p className="text-gray-600 text-lg mb-6">
+                        Access your healthcare dashboard to manage appointments, view patient records, and provide consultations.
+                    </p>
 
-                        {/* Email Input */}
-                        <div className="mx-auto gap-4 mb-12">
-                            <div className="relative flex">
-                                <input
-                                    type="text"
-                                    placeholder="What issue are you facing?"
-                                    className="w-full px-4 py-4 rounded-full border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                />
-                                <button className="absolute right-0 bottom-0 top-0 bg-blue-500 text-white px-6 py-4 rounded-full hover:bg-blue-600 transition-colors">
-                                    Get Started
-                                </button>
-                            </div>
+                    <div className="grid grid-cols-2 sm:grid-cols-3 gap-6 mt-8">
+                        <div className="p-4 bg-white rounded-lg shadow-sm">
+                            <div className="text-2xl font-bold text-blue-900">4.9/5</div>
+                            <p className="text-sm text-gray-600">Provider Rating</p>
                         </div>
-
-                        {/* Stats */}
-                        <div className="grid grid-cols-1 sm:grid-cols-3 gap-8">
-                            {stats.map((stat, index) => (
-                                <div
-                                    key={index}
-                                    className="text-center sm:text-left"
-                                >
-                                    <div className="flex items-center sm:items-baseline justify-center sm:justify-start">
-                                        <span className="text-4xl sm:text-3xl font-bold text-blue-900">{stat.value}</span>
-                                    </div>
-                                    <p className="text-md sm:text-sm text-gray-600 mt-1">{stat.label}</p>
-                                </div>
-                            ))}
+                        <div className="p-4 bg-white rounded-lg shadow-sm">
+                            <div className="text-2xl font-bold text-blue-900">100%</div>
+                            <p className="text-sm text-gray-600">HIPAA Compliant</p>
                         </div>
-
+                        <div className="p-4 bg-white rounded-lg shadow-sm sm:col-span-1 col-span-2">
+                            <div className="text-2xl font-bold text-blue-900">24/7</div>
+                            <p className="text-sm text-gray-600">Support</p>
+                        </div>
                     </div>
+                </div>
 
-                    {/* Right Column - Doctor Interface */}
-                    <div className="relative flex flex-col justify-center items-center">
+                <div className="w-full max-w-md mx-auto">
+                    <div className="bg-white rounded-xl shadow-lg p-8">
+                        <div className="text-center mb-8">
+                            <h2 className="text-2xl font-bold text-blue-950">Login to Your Account</h2>
+                            <p className="text-gray-600 mt-2">Please enter your credentials</p>
+                        </div>
 
-                        <main className="w-full max-w-md p-6 bg-white rounded-lg shadow-md">
-                            <h1 className="text-2xl font-semibold text-center text-blue-950 mb-6">Login</h1>
-                            <form className="space-y-4">
-                                <div>
-                                    <label htmlFor="email"
-                                           className="block text-sm font-medium text-gray-600">Email</label>
-                                    <input
-                                        type="email"
-                                        id="email"
-                                        className="w-full px-4 py-2 mt-2 text-sm border rounded-md focus:ring focus:ring-blue-300 focus:outline-none focus:ring-opacity-50"
-                                        placeholder="Enter your email"
-                                        required
-                                    />
-                                </div>
-                                <div>
-                                    <label htmlFor="password"
-                                           className="block text-sm font-medium text-gray-600">Password</label>
-                                    <input
-                                        type="password"
-                                        id="password"
-                                        className="w-full px-4 py-2 mt-2 text-sm border rounded-md focus:ring focus:ring-blue-300 focus:outline-none focus:ring-opacity-50"
-                                        placeholder="Enter your password"
-                                        required
-                                    />
-                                </div>
-                                <button
-                                    type="submit"
-                                    className="w-full px-4 py-2 text-white bg-blue-500 rounded-md hover:bg-blue-600 transition focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-50"
-                                >
-                                    Login
-                                </button>
-                            </form>
-                            <div className="mt-4 text-center flex flex-col">
-                                <p className="text-sm text-gray-600">Don&apos;t have an account?</p>
-                                <Link
-                                    href={"/signup"}
-                                    type="button"
-                                    className="mt-2 px-4 py-2 text-blue-500 border border-blue-500 rounded-md hover:bg-blue-50 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-50"
-                                >
-                                    Sign Up
-                                </Link>
+                        <form className="space-y-6">
+                            <div>
+                                <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
+                                    Email Address
+                                </label>
+                                <input
+                                    type="email"
+                                    id="email"
+                                    className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200"
+                                    placeholder="doctor@example.com"
+                                    required
+                                />
                             </div>
-                        </main>
+
+                            <div>
+                                <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-2">
+                                    Password
+                                </label>
+                                <div className="relative">
+                                    <input
+                                        type={showPassword ? "text" : "password"}
+                                        id="password"
+                                        className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200"
+                                        placeholder="••••••••"
+                                        required
+                                    />
+                                    <button
+                                        type="button"
+                                        onClick={() => setShowPassword(!showPassword)}
+                                        className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700 focus:outline-none"
+                                    >
+                                        {showPassword ?
+                                            <EyeOff className="w-5 h-5" /> :
+                                            <Eye className="w-5 h-5" />
+                                        }
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div className="flex items-center justify-between">
+                                <div className="flex items-center">
+                                    <input
+                                        id="remember-me"
+                                        name="remember-me"
+                                        type="checkbox"
+                                        className="h-4 w-4 text-blue-500 border-gray-300 rounded focus:ring-blue-500"
+                                    />
+                                    <label htmlFor="remember-me" className="ml-2 block text-sm text-gray-700">
+                                        Remember me
+                                    </label>
+                                </div>
+                                <div className="text-sm">
+                                    <a href="#" className="text-blue-500 hover:text-blue-600">
+                                        Forgot password?
+                                    </a>
+                                </div>
+                            </div>
+
+                            <button
+                                type="submit"
+                                className="w-full bg-blue-500 text-white py-3 px-4 rounded-lg hover:bg-blue-600 transition duration-200 font-medium"
+                            >
+                                Sign in
+                            </button>
+                        </form>
+
+                        <div className="mt-6 text-center">
+                            <p className="text-gray-600 mb-4">Don't have an account?</p>
+                            <Link
+                                href="/signup"
+                                className="inline-block w-full px-4 py-3 border border-blue-500 text-blue-500 rounded-lg hover:bg-blue-50 transition duration-200 font-medium"
+                            >
+                                Create Account
+                            </Link>
+                        </div>
                     </div>
                 </div>
             </div>
