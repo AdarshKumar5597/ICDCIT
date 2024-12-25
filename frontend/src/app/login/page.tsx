@@ -1,6 +1,4 @@
 import React from 'react';
-import Image from 'next/image';
-import { Star, Circle, User } from 'lucide-react';
 import Link from "next/link";
 
 const Page = () => {
@@ -101,7 +99,7 @@ const Page = () => {
                                 </button>
                             </form>
                             <div className="mt-4 text-center flex flex-col">
-                                <p className="text-sm text-gray-600">Don't have an account?</p>
+                                <p className="text-sm text-gray-600">Don&apos;t have an account?</p>
                                 <Link
                                     href={"/signup"}
                                     type="button"

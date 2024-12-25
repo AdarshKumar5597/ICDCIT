@@ -10,7 +10,7 @@ const SectionHeader = () => {
                 Get started in minutes
             </h2>
             <p className="text-gray-600 max-w-2xl mx-auto text-lg">
-                Your journey to better health is just four simple steps away. We've made the process easy and straightforward.
+                Your journey to better health is just four simple steps away. We&apos;ve made the process easy and straightforward.
             </p>
         </div>
     )

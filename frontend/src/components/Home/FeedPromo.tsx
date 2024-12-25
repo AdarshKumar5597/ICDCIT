@@ -1,7 +1,5 @@
 import React from 'react';
-import Image from 'next/image';
 import FeedDetails from './subcomponents/FeedDetails';
-import { Bookmark, Clock, Heart } from 'lucide-react';
 import FeedPromoCard from './subcomponents/FeedPromoCard';
 
 const FeedPromo = () => {

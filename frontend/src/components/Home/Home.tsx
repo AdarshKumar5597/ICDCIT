@@ -1,5 +1,4 @@
 import React from 'react';
-import Image from 'next/image';
 import Hero from './subcomponents/Hero';
 import DoctorCard from './subcomponents/DoctorCard';
 
