@@ -6,6 +6,7 @@ import { Menu, X, ChevronDown } from 'lucide-react';
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(true);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -14,6 +15,10 @@ const Navbar = () => {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  const handleLogout = () => {
+    setIsLoggedIn(false);
+  };
 
   return (
     <>
@@ -60,12 +65,23 @@ const Navbar = () => {
             </div>
 
             <div className="hidden md:flex items-center gap-4">
-              <a href="/login" className="text-blue-600 font-medium hover:text-blue-800 transition-colors">
-                Login
-              </a>
-              <a href="/signup" className="bg-blue-600 text-white px-6 py-2.5 rounded-full font-medium hover:bg-blue-700 transition-colors">
-                Sign up
-              </a>
+              {isLoggedIn ? (
+                <button
+                  onClick={handleLogout}
+                  className="bg-blue-600 text-white px-6 py-2.5 rounded-full font-medium hover:bg-blue-700 transition-colors"
+                >
+                  Logout
+                </button>
+              ) : (
+                <>
+                  <a href="/login" className="text-blue-600 font-medium hover:text-blue-800 transition-colors">
+                    Login
+                  </a>
+                  <a href="/signup" className="bg-blue-600 text-white px-6 py-2.5 rounded-full font-medium hover:bg-blue-700 transition-colors">
+                    Sign up
+                  </a>
+                </>
+              )}
             </div>
           </div>
         </div>
@@ -89,17 +105,34 @@ const Navbar = () => {
             <a href="/contact" className="text-lg hover:text-blue-600 transition-colors py-2">Contact</a>
           </div>
           <div className="mt-auto space-y-4">
-            <a href="/login" className="block w-full text-center text-blue-600 font-medium py-2 hover:text-blue-800 transition-colors">
-              Login
-            </a>
-            <a href="/signup" className="block w-full text-center bg-blue-600 text-white py-3 rounded-full font-medium hover:bg-blue-700 transition-colors">
-              Sign up
-            </a>
+
+
+
+
+
+
+            {isLoggedIn ? (
+              <button
+                onClick={handleLogout}
+                className="block w-full text-center bg-blue-600 text-white py-3 rounded-full font-medium hover:bg-blue-700 transition-colors"
+              >
+                Logout
+              </button>
+            ) : (
+              <>
+                <a href="/login" className="block w-full text-center text-blue-600 font-medium py-2 hover:text-blue-800 transition-colors">
+                  Login
+                </a>
+                <a href="/signup" className="block w-full text-center bg-blue-600 text-white py-3 rounded-full font-medium hover:bg-blue-700 transition-colors">
+                  Sign up
+                </a>
+              </>
+            )}
           </div>
         </div>
       </div>
     </>
   );
-};
 
+};
 export default Navbar;
