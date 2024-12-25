@@ -105,12 +105,6 @@ const Navbar = () => {
             <a href="/contact" className="text-lg hover:text-blue-600 transition-colors py-2">Contact</a>
           </div>
           <div className="mt-auto space-y-4">
-
-
-
-
-
-
             {isLoggedIn ? (
               <button
                 onClick={handleLogout}
@@ -133,6 +127,5 @@ const Navbar = () => {
       </div>
     </>
   );
-
 };
 export default Navbar;
