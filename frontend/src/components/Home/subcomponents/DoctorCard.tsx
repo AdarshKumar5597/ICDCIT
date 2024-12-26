@@ -12,6 +12,7 @@ const DoctorCard = () => {
                         width={400}
                         height={320}
                         className="w-full h-full object-cover select-none"
+                        loading='lazy'
                     />
                     <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-white via-white/90 to-transparent p-4">
                         <div className="flex items-center justify-between">
@@ -33,6 +34,7 @@ const DoctorCard = () => {
                                 width={1000}
                                 height={1000}
                                 className="w-full h-full object-cover"
+                                loading='lazy'
                             />
                         </div>
                         <div>

@@ -34,6 +34,7 @@ const Navbar = () => {
                 width={48}
                 height={48}
                 className="object-contain"
+                loading='lazy'
               />
               <h1 className="text-2xl font-bold text-blue-600">
                 ICDCIT

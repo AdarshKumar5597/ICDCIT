@@ -32,6 +32,7 @@ const FeedPromoCard = () => {
                             width={1000}
                             height={1000}
                             className='object-cover w-full h-full'
+                            loading='lazy'
                         />
                     </div>
                 </div>
