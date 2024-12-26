@@ -108,7 +108,7 @@ const Page = () => {
                         </form>
 
                         <div className="mt-6 text-center">
-                            <p className="text-gray-600 mb-4">Don't have an account?</p>
+                            <p className="text-gray-600 mb-4">Don&apos;t have an account?</p>
                             <Link
                                 href="/signup"
                                 className="inline-block w-full px-4 py-3 border border-blue-500 text-blue-500 rounded-lg hover:bg-blue-50 transition duration-200 font-medium"
