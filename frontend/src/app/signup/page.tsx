@@ -2,11 +2,14 @@
 
 import React, { useState } from 'react';
 import Link from "next/link";
-import { Eye, EyeOff } from 'lucide-react';
 
 const Page = () => {
+    const [step, setStep] = useState(1);
     const [showPassword, setShowPassword] = useState(false);
-    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+    // const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
+    const nextStep = () => setStep((prev) => prev + 1);
+    const prevStep = () => setStep((prev) => prev - 1);
 
     return (
         <div className="bg-gradient-to-br from-blue-50 to-white min-h-screen pt-24 px-4 sm:px-6 lg:px-8">
@@ -16,7 +19,8 @@ const Page = () => {
                         Join HealthCare Online
                     </h1>
                     <p className="text-gray-600 text-lg mb-6">
-                        Create your account to access personalized healthcare services and connect with trusted medical professionals.
+                        Create your account to access personalized healthcare services and connect with trusted medical
+                        professionals.
                     </p>
 
                     <div className="grid grid-cols-2 sm:grid-cols-3 gap-6 mt-8">
@@ -35,13 +39,13 @@ const Page = () => {
                     </div>
                 </div>
 
-                <div className="w-full max-w-md mx-auto">
-                    <div className="bg-white rounded-xl shadow-lg p-8">
-                        <div className="text-center mb-8">
-                            <h2 className="text-2xl font-bold text-blue-950">Create Your Account</h2>
-                            <p className="text-gray-600 mt-2">Fill in your information to get started</p>
-                        </div>
+                <div className="bg-white rounded-xl shadow-lg p-8">
+                    <div className="text-center mb-8">
+                        <h2 className="text-2xl font-bold text-blue-950">Create Your Account</h2>
+                        <p className="text-gray-600 mt-2">Step {step} of 4</p>
+                    </div>
 
+                    {step === 1 && (
                         <form className="space-y-6">
                             <div className="grid grid-cols-2 gap-4">
                                 <div>
@@ -100,74 +104,141 @@ const Page = () => {
                                         onClick={() => setShowPassword(!showPassword)}
                                         className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700 focus:outline-none"
                                     >
-                                        {showPassword ?
-                                            <EyeOff className="w-5 h-5" /> :
-                                            <Eye className="w-5 h-5" />
-                                        }
+                                        {showPassword ? "Hide" : "Show"}
                                     </button>
                                 </div>
-                            </div>
-
-                            <div>
-                                <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700 mb-2">
-                                    Confirm Password
-                                </label>
-                                <div className="relative">
-                                    <input
-                                        type={showConfirmPassword ? "text" : "password"}
-                                        id="confirmPassword"
-                                        className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200"
-                                        placeholder="••••••••"
-                                        required
-                                    />
-                                    <button
-                                        type="button"
-                                        onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                                        className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700 focus:outline-none"
-                                    >
-                                        {showConfirmPassword ?
-                                            <EyeOff className="w-5 h-5" /> :
-                                            <Eye className="w-5 h-5" />
-                                        }
-                                    </button>
-                                </div>
-                            </div>
-
-                            <div className="flex items-center">
-                                <input
-                                    id="terms"
-                                    name="terms"
-                                    type="checkbox"
-                                    className="h-4 w-4 text-blue-500 border-gray-300 rounded focus:ring-blue-500"
-                                    required
-                                />
-                                <label htmlFor="terms" className="ml-2 block text-sm text-gray-700">
-                                    I agree to the <a href="#" className="text-blue-500 hover:text-blue-600">Terms of Service</a> and <a href="#" className="text-blue-500 hover:text-blue-600">Privacy Policy</a>
-                                </label>
                             </div>
 
                             <button
-                                type="submit"
+                                type="button"
+                                onClick={nextStep}
                                 className="w-full bg-blue-500 text-white py-3 px-4 rounded-lg hover:bg-blue-600 transition duration-200 font-medium"
                             >
-                                Create Account
+                                Next
                             </button>
                         </form>
+                    )}
 
-                        <div className="mt-6 text-center">
-                            <p className="text-gray-600 mb-4">Already have an account?</p>
-                            <Link
-                                href="/login"
-                                className="inline-block w-full px-4 py-3 border border-blue-500 text-blue-500 rounded-lg hover:bg-blue-50 transition duration-200 font-medium"
-                            >
-                                Sign In
-                            </Link>
+                    {step === 2 && (
+                        <div className="space-y-6">
+                            <div>
+                                <p className="text-sm font-medium text-gray-700 mb-4">Select your role:</p>
+                                <div className="flex space-x-4">
+                                    <button
+                                        type="button"
+                                        className="w-1/2 bg-blue-500 text-white py-3 px-4 rounded-lg hover:bg-blue-600 transition duration-200 font-medium"
+                                    >
+                                        Doctor
+                                    </button>
+                                    <button
+                                        type="button"
+                                        className="w-1/2 bg-blue-500 text-white py-3 px-4 rounded-lg hover:bg-blue-600 transition duration-200 font-medium"
+                                    >
+                                        Patient
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div className="flex justify-between">
+                                <button
+                                    type="button"
+                                    onClick={prevStep}
+                                    className="bg-gray-200 text-gray-700 py-3 px-4 rounded-lg hover:bg-gray-300 transition duration-200 font-medium"
+                                >
+                                    Back
+                                </button>
+                                <button
+                                    type="button"
+                                    onClick={nextStep}
+                                    className="bg-blue-500 text-white py-3 px-4 rounded-lg hover:bg-blue-600 transition duration-200 font-medium"
+                                >
+                                    Next
+                                </button>
+                            </div>
                         </div>
+                    )}
+
+                    {step === 3 && (
+                        <div className="space-y-6">
+                            <div>
+                                <label htmlFor="profilePicture"
+                                       className="block text-sm font-medium text-gray-700 mb-2">
+                                    Profile Picture
+                                </label>
+                                <input
+                                    type="file"
+                                    id="profilePicture"
+                                    className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200"
+                                    required
+                                />
+                            </div>
+
+                            <div className="flex justify-between">
+                                <button
+                                    type="button"
+                                    onClick={prevStep}
+                                    className="bg-gray-200 text-gray-700 py-3 px-4 rounded-lg hover:bg-gray-300 transition duration-200 font-medium"
+                                >
+                                    Back
+                                </button>
+                                <button
+                                    type="button"
+                                    onClick={nextStep}
+                                    className="bg-blue-500 text-white py-3 px-4 rounded-lg hover:bg-blue-600 transition duration-200 font-medium"
+                                >
+                                    Next
+                                </button>
+                            </div>
+                        </div>
+                    )}
+
+                    {step === 4 && (
+                        <div className="space-y-6">
+                            <div>
+                                <label htmlFor="bio" className="block text-sm font-medium text-gray-700 mb-2">
+                                    Bio
+                                </label>
+                                <textarea
+                                    id="bio"
+                                    rows="4"
+                                    className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200"
+                                    placeholder="Tell us about yourself"
+                                    required
+                                ></textarea>
+                            </div>
+
+                            <div className="flex justify-between">
+                                <button
+                                    type="button"
+                                    onClick={prevStep}
+                                    className="bg-gray-200 text-gray-700 py-3 px-4 rounded-lg hover:bg-gray-300 transition duration-200 font-medium"
+                                >
+                                    Back
+                                </button>
+                                <button
+                                    type="submit"
+                                    className="bg-blue-500 text-white py-3 px-4 rounded-lg hover:bg-blue-600 transition duration-200 font-medium"
+                                >
+                                    Submit
+                                </button>
+                            </div>
+                        </div>
+                    )}
+
+                    <div className="mt-6 text-center">
+                        <p className="text-gray-600 mb-4">Already have an account?</p>
+                        <Link
+                            href="/login"
+                            className="inline-block w-full px-4 py-3 border border-blue-500 text-blue-500 rounded-lg hover:bg-blue-50 transition duration-200 font-medium"
+                        >
+                            Sign In
+                        </Link>
                     </div>
                 </div>
-            </div>
         </div>
-    );
+</div>
+)
+    ;
 };
 
 export default Page;
