@@ -32,7 +32,7 @@ const Page = () => {
         });
     };
 
-    const handleProfilePictureUpload = async (e: React.ChangeEvent<HTMLInputElement>, type: 'certificate' | 'profilePhoto') => {
+    const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>, type: 'certificate' | 'profilePhoto') => {
         if (e.target.files && e.target.files[0]) {
             const file = e.target.files[0];//send
             setFormData({
@@ -41,39 +41,6 @@ const Page = () => {
             });
         }
     };
-
-
-    const handleCertificateUpload = async (
-        e: React.ChangeEvent<HTMLInputElement>,
-        type: 'certificate' | 'profilePhoto'
-    ) => {
-        if (!e.target.files || e.target.files.length === 0) return;
-
-        const file = e.target.files[0];
-
-        try {
-            const fileAsByteArray = await fileToByteArray(file);
-            console.log(`Uploaded ${type}:`, fileAsByteArray);
-        } catch (error) {
-            console.error("Error converting file to byte array:", error);
-        }
-    };
-
-    const fileToByteArray = (file: File): Promise<Uint8Array> => {
-        return new Promise((resolve, reject) => {
-            const reader = new FileReader();
-            reader.onload = () => {
-                if (reader.result) {
-                    resolve(new Uint8Array(reader.result as ArrayBuffer));
-                } else {
-                    reject(new Error("File could not be read"));
-                }
-            };
-            reader.onerror = () => reject(new Error("Error reading file"));
-            reader.readAsArrayBuffer(file);
-        });
-    };
-
 
     const nextStep = () => {
         console.log('Current form data:', formData);
@@ -262,7 +229,7 @@ const Page = () => {
                                             type="file"
                                             id="certificate"
                                             accept=".pdf,.jpg,.jpeg,.png"
-                                            onChange={(e) => handleCertificateUpload(e, 'certificate')}
+                                            onChange={(e) => handleImageUpload(e, 'certificate')}
                                             className="w-full px-3 py-2 rounded-lg border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                                             required
                                         />
@@ -330,7 +297,7 @@ const Page = () => {
                                             type="file"
                                             id="profilePhoto"
                                             accept="image/*"
-                                            onChange={(e) => handleProfilePictureUpload(e, 'profilePhoto')}
+                                            onChange={(e) => handleImageUpload(e, 'profilePhoto')}
                                             className="w-full px-3 py-2 rounded-lg border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                                             required
                                         />
