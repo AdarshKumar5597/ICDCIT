@@ -7,13 +7,15 @@ import lombok.NoArgsConstructor;
 
 import java.util.List;
 
+import org.springframework.web.multipart.MultipartFile;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 public class DoctorRegistrationRequestDTO {
     private Long userId;
-    private byte[] certificate;
+    private MultipartFile certificate;
     private String bio;
     private List<String> proficiencies;
 }

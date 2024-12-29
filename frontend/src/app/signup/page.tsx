@@ -1,244 +1,375 @@
 "use client";
-
 import React, { useState } from 'react';
 import Link from "next/link";
 
 const Page = () => {
     const [step, setStep] = useState(1);
     const [showPassword, setShowPassword] = useState(false);
-    // const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+    const [formData, setFormData] = useState({
+        firstName: '',
+        lastName: '',
+        userName: '',
+        email: '',
+        password: '',
+        role: '',
+        certificate: '',
+        bio: '',
+        proficiencies: [] as string[],
+        profilePhoto: ''
+    });
 
-    const nextStep = () => setStep((prev) => prev + 1);
-    const prevStep = () => setStep((prev) => prev - 1);
+    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+        setFormData({
+            ...formData,
+            [e.target.id]: e.target.value
+        });
+    };
+
+    const handleRoleSelect = (role: string) => {
+        setFormData({
+            ...formData,
+            role: role
+        });
+    };
+
+    const handleProfilePictureUpload = async (e: React.ChangeEvent<HTMLInputElement>, type: 'certificate' | 'profilePhoto') => {
+        if (e.target.files && e.target.files[0]) {
+            const file = e.target.files[0];//send
+            setFormData({
+                ...formData,
+                [type]: file
+            });
+        }
+    };
+
+
+    const handleCertificateUpload = async (
+        e: React.ChangeEvent<HTMLInputElement>,
+        type: 'certificate' | 'profilePhoto'
+    ) => {
+        if (!e.target.files || e.target.files.length === 0) return;
+
+        const file = e.target.files[0];
+
+        try {
+            const fileAsByteArray = await fileToByteArray(file);
+            console.log(`Uploaded ${type}:`, fileAsByteArray);
+        } catch (error) {
+            console.error("Error converting file to byte array:", error);
+        }
+    };
+
+    const fileToByteArray = (file: File): Promise<Uint8Array> => {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onload = () => {
+                if (reader.result) {
+                    resolve(new Uint8Array(reader.result as ArrayBuffer));
+                } else {
+                    reject(new Error("File could not be read"));
+                }
+            };
+            reader.onerror = () => reject(new Error("Error reading file"));
+            reader.readAsArrayBuffer(file);
+        });
+    };
+
+
+    const nextStep = () => {
+        console.log('Current form data:', formData);
+        if (step === 1 && formData.role === 'USER') {
+            setStep(3);
+        } else {
+            setStep((prev) => prev + 1);
+        }
+    };
+
+
+    const prevStep = () => {
+        if (step === 3 && formData.role === 'USER') {
+            setStep(1);
+        } else {
+            setStep((prev) => prev - 1);
+        }
+    };
 
     return (
-        <div className="bg-gradient-to-br from-blue-50 to-white min-h-screen pt-24 px-4 sm:px-6 lg:px-8">
-            <div className="max-w-6xl w-full mx-auto grid lg:grid-cols-2 gap-12 items-center">
-                <div className="text-center lg:text-left">
-                    <h1 className="text-4xl font-bold text-blue-950 mb-4">
-                        Join HealthCare Online
-                    </h1>
-                    <p className="text-gray-600 text-lg mb-6">
-                        Create your account to access personalized healthcare services and connect with trusted medical
-                        professionals.
-                    </p>
+        <div className="min-h-screen flex justify-center align-center bg-gradient-to-br from-blue-50 via-white to-blue-50 pt-16">
+            <div className="container mx-auto py-6 flex items-center justify-center px-4">
+                <div className="w-full max-w-6xl grid lg:grid-cols-5 gap-[10%] items-start">
+                    {/* Left Content */}
+                    <div className="lg:col-span-2 hidden lg:block sticky top-24">
+                        <div className="space-y-6">
+                            <div>
+                                <h1 className="text-4xl font-bold text-blue-950 mb-3">
+                                    Your Health Journey Starts Here
+                                </h1>
+                                <p className="text-lg text-gray-600">
+                                    Join our trusted healthcare platform and connect with top medical professionals.
+                                </p>
+                            </div>
 
-                    <div className="grid grid-cols-2 sm:grid-cols-3 gap-6 mt-8">
-                        <div className="p-4 bg-white rounded-lg shadow-sm">
-                            <div className="text-2xl font-bold text-blue-900">2M+</div>
-                            <p className="text-sm text-gray-600">Active Users</p>
+                            <div className="grid grid-cols-1 gap-3">
+                                <div className="bg-white/70 backdrop-blur-sm p-5 rounded-xl border border-blue-100">
+                                    <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center mb-3">
+                                        <svg className="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                                        </svg>
+                                    </div>
+                                    <h3 className="text-lg font-semibold text-blue-950 mb-1">Verified Professionals</h3>
+                                    <p className="text-sm text-gray-600">Connect with certified healthcare providers you can trust.</p>
+                                </div>
+                            </div>
                         </div>
-                        <div className="p-4 bg-white rounded-lg shadow-sm">
-                            <div className="text-2xl font-bold text-blue-900">100%</div>
-                            <p className="text-sm text-gray-600">Secure & Private</p>
-                        </div>
-                        <div className="p-4 bg-white rounded-lg shadow-sm sm:col-span-1 col-span-2">
-                            <div className="text-2xl font-bold text-blue-900">24/7</div>
-                            <p className="text-sm text-gray-600">Support</p>
+                    </div>
+
+                    {/* Right Content - Form */}
+                    <div className="lg:col-span-3 w-full">
+                        <div className="bg-white rounded-xl shadow-lg p-6">
+                            <div className="flex items-center justify-between mb-6">
+                                <div>
+                                    <h2 className="text-2xl font-bold text-blue-950">Create Account</h2>
+                                    <p className="text-gray-500 mt-1">Step {step} of 3</p>
+                                </div>
+                                <div className="flex gap-2">
+                                    {[1, 2, 3].map((s) => (
+                                        <div
+                                            key={s}
+                                            className={`w-2 h-2 rounded-full transition-colors ${step >= s ? 'bg-blue-500' : 'bg-gray-200'
+                                                }`}
+                                        />
+                                    ))}
+                                </div>
+                            </div>
+
+                            {step === 1 && (
+                                <form className="space-y-4" onSubmit={(e) => { e.preventDefault(); nextStep(); }}>
+                                    <div className="grid grid-cols-2 gap-3">
+                                        <div>
+                                            <label htmlFor="firstName" className="block text-sm font-medium text-gray-700 mb-1">
+                                                First Name
+                                            </label>
+                                            <input
+                                                type="text"
+                                                id="firstName"
+                                                value={formData.firstName}
+                                                onChange={handleInputChange}
+                                                className="w-full px-3 py-2 rounded-lg border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                                required
+                                            />
+                                        </div>
+                                        <div>
+                                            <label htmlFor="lastName" className="block text-sm font-medium text-gray-700 mb-1">
+                                                Last Name
+                                            </label>
+                                            <input
+                                                type="text"
+                                                id="lastName"
+                                                value={formData.lastName}
+                                                onChange={handleInputChange}
+                                                className="w-full px-3 py-2 rounded-lg border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                                required
+                                            />
+                                        </div>
+                                    </div>
+
+                                    <div className="grid grid-cols-2 gap-3">
+                                        <div>
+                                            <label htmlFor="userName" className="block text-sm font-medium text-gray-700 mb-1">
+                                                Username
+                                            </label>
+                                            <input
+                                                type="text"
+                                                id="userName"
+                                                value={formData.userName}
+                                                onChange={handleInputChange}
+                                                className="w-full px-3 py-2 rounded-lg border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                                required
+                                            />
+                                        </div>
+                                        <div>
+                                            <label htmlFor="role" className="block text-sm font-medium text-gray-700 mb-1">
+                                                Role
+                                            </label>
+                                            <select
+                                                id="role"
+                                                value={formData.role}
+                                                onChange={(e) => handleRoleSelect(e.target.value)}
+                                                className="w-full px-3 py-2 rounded-lg border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                                required
+                                            >
+                                                <option value="">Select Role</option>
+                                                <option value="DOCTOR">Doctor</option>
+                                                <option value="USER">User</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div>
+                                        <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
+                                            Email Address
+                                        </label>
+                                        <input
+                                            type="email"
+                                            id="email"
+                                            value={formData.email}
+                                            onChange={handleInputChange}
+                                            className="w-full px-3 py-2 rounded-lg border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                            placeholder="you@example.com"
+                                            required
+                                        />
+                                    </div>
+
+                                    <div>
+                                        <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
+                                            Password
+                                        </label>
+                                        <div className="relative">
+                                            <input
+                                                type={showPassword ? "text" : "password"}
+                                                id="password"
+                                                value={formData.password}
+                                                onChange={handleInputChange}
+                                                className="w-full px-3 py-2 rounded-lg border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                                required
+                                            />
+                                            <button
+                                                type="button"
+                                                onClick={() => setShowPassword(!showPassword)}
+                                                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700"
+                                            >
+                                                {showPassword ? "Hide" : "Show"}
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                    <button
+                                        type="submit"
+                                        className="w-full bg-blue-500 text-white py-2.5 px-4 rounded-lg hover:bg-blue-600 transition-colors font-medium mt-2"
+                                    >
+                                        Continue
+                                    </button>
+                                </form>
+                            )}
+
+                            {step === 2 && (
+                                <form className="space-y-4" onSubmit={(e) => { e.preventDefault(); nextStep(); }}>
+                                    <div>
+                                        <label htmlFor="certificate" className="block text-sm font-medium text-gray-700 mb-1">
+                                            Upload Certificate
+                                        </label>
+                                        <input
+                                            type="file"
+                                            id="certificate"
+                                            accept=".pdf,.jpg,.jpeg,.png"
+                                            onChange={(e) => handleCertificateUpload(e, 'certificate')}
+                                            className="w-full px-3 py-2 rounded-lg border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                            required
+                                        />
+                                    </div>
+
+                                    <div>
+                                        <label htmlFor="bio" className="block text-sm font-medium text-gray-700 mb-1">
+                                            Bio
+                                        </label>
+                                        <textarea
+                                            id="bio"
+                                            value={formData.bio}
+                                            onChange={handleInputChange}
+                                            className="w-full px-3 py-2 rounded-lg border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                            rows={4}
+                                            required
+                                        />
+                                    </div>
+
+                                    <div>
+                                        <label htmlFor="proficiencies" className="block text-sm font-medium text-gray-700 mb-1">
+                                            Proficiencies (comma-separated)
+                                        </label>
+                                        <input
+                                            type="text"
+                                            id="proficiencies"
+                                            onChange={(e) => {
+                                                const proficienciesArray = e.target.value.split(',').map(el => el.trim());
+                                                setFormData({
+                                                    ...formData,
+                                                    proficiencies: proficienciesArray
+                                                });
+                                            }}
+                                            className="w-full px-3 py-2 rounded-lg border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                            placeholder="e.g. Cardiology, Pediatrics, Surgery"
+                                            required
+                                        />
+                                    </div>
+
+                                    <div className="flex gap-3">
+                                        <button
+                                            type="button"
+                                            onClick={prevStep}
+                                            className="w-full bg-gray-100 text-gray-700 py-2.5 px-4 rounded-lg hover:bg-gray-200 transition-colors font-medium"
+                                        >
+                                            Back
+                                        </button>
+                                        <button
+                                            type="submit"
+                                            className="w-full bg-blue-500 text-white py-2.5 px-4 rounded-lg hover:bg-blue-600 transition-colors font-medium"
+                                        >
+                                            Continue
+                                        </button>
+                                    </div>
+                                </form>
+                            )}
+
+                            {step === 3 && (
+                                <form className="space-y-4" onSubmit={(e) => { e.preventDefault(); console.log('Final form data:', formData); }}>
+                                    <div>
+                                        <label htmlFor="profilePhoto" className="block text-sm font-medium text-gray-700 mb-1">
+                                            Profile Photo
+                                        </label>
+                                        <input
+                                            type="file"
+                                            id="profilePhoto"
+                                            accept="image/*"
+                                            onChange={(e) => handleProfilePictureUpload(e, 'profilePhoto')}
+                                            className="w-full px-3 py-2 rounded-lg border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                            required
+                                        />
+                                    </div>
+
+                                    <div className="flex gap-3">
+                                        <button
+                                            type="button"
+                                            onClick={prevStep}
+                                            className="w-full bg-gray-100 text-gray-700 py-2.5 px-4 rounded-lg hover:bg-gray-200 transition-colors font-medium"
+                                        >
+                                            Back
+                                        </button>
+                                        <button
+                                            type="submit"
+                                            className="w-full bg-blue-500 text-white py-2.5 px-4 rounded-lg hover:bg-blue-600 transition-colors font-medium"
+                                        >
+                                            Complete Registration
+                                        </button>
+                                    </div>
+                                </form>
+                            )}
+
+                            <div className="mt-6 pt-4 border-t border-gray-100">
+                                <p className="text-center text-gray-600 mb-3">Already have an account?</p>
+                                <Link
+                                    href="/login"
+                                    className="block w-full text-center px-4 py-2 rounded-lg border border-blue-100 text-blue-600 font-medium hover:bg-blue-50 transition-colors"
+                                >
+                                    Sign In
+                                </Link>
+                            </div>
                         </div>
                     </div>
                 </div>
-
-                <div className="bg-white rounded-xl shadow-lg p-8">
-                    <div className="text-center mb-8">
-                        <h2 className="text-2xl font-bold text-blue-950">Create Your Account</h2>
-                        <p className="text-gray-600 mt-2">Step {step} of 4</p>
-                    </div>
-
-                    {step === 1 && (
-                        <form className="space-y-6">
-                            <div className="grid grid-cols-2 gap-4">
-                                <div>
-                                    <label htmlFor="firstName" className="block text-sm font-medium text-gray-700 mb-2">
-                                        First Name
-                                    </label>
-                                    <input
-                                        type="text"
-                                        id="firstName"
-                                        className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200"
-                                        placeholder="John"
-                                        required
-                                    />
-                                </div>
-                                <div>
-                                    <label htmlFor="lastName" className="block text-sm font-medium text-gray-700 mb-2">
-                                        Last Name
-                                    </label>
-                                    <input
-                                        type="text"
-                                        id="lastName"
-                                        className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200"
-                                        placeholder="Doe"
-                                        required
-                                    />
-                                </div>
-                            </div>
-
-                            <div>
-                                <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
-                                    Email Address
-                                </label>
-                                <input
-                                    type="email"
-                                    id="email"
-                                    className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200"
-                                    placeholder="john.doe@example.com"
-                                    required
-                                />
-                            </div>
-
-                            <div>
-                                <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-2">
-                                    Password
-                                </label>
-                                <div className="relative">
-                                    <input
-                                        type={showPassword ? "text" : "password"}
-                                        id="password"
-                                        className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200"
-                                        placeholder="••••••••"
-                                        required
-                                    />
-                                    <button
-                                        type="button"
-                                        onClick={() => setShowPassword(!showPassword)}
-                                        className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700 focus:outline-none"
-                                    >
-                                        {showPassword ? "Hide" : "Show"}
-                                    </button>
-                                </div>
-                            </div>
-
-                            <button
-                                type="button"
-                                onClick={nextStep}
-                                className="w-full bg-blue-500 text-white py-3 px-4 rounded-lg hover:bg-blue-600 transition duration-200 font-medium"
-                            >
-                                Next
-                            </button>
-                        </form>
-                    )}
-
-                    {step === 2 && (
-                        <div className="space-y-6">
-                            <div>
-                                <p className="text-sm font-medium text-gray-700 mb-4">Select your role:</p>
-                                <div className="flex space-x-4">
-                                    <button
-                                        type="button"
-                                        className="w-1/2 bg-blue-500 text-white py-3 px-4 rounded-lg hover:bg-blue-600 transition duration-200 font-medium"
-                                    >
-                                        Doctor
-                                    </button>
-                                    <button
-                                        type="button"
-                                        className="w-1/2 bg-blue-500 text-white py-3 px-4 rounded-lg hover:bg-blue-600 transition duration-200 font-medium"
-                                    >
-                                        Patient
-                                    </button>
-                                </div>
-                            </div>
-
-                            <div className="flex justify-between">
-                                <button
-                                    type="button"
-                                    onClick={prevStep}
-                                    className="bg-gray-200 text-gray-700 py-3 px-4 rounded-lg hover:bg-gray-300 transition duration-200 font-medium"
-                                >
-                                    Back
-                                </button>
-                                <button
-                                    type="button"
-                                    onClick={nextStep}
-                                    className="bg-blue-500 text-white py-3 px-4 rounded-lg hover:bg-blue-600 transition duration-200 font-medium"
-                                >
-                                    Next
-                                </button>
-                            </div>
-                        </div>
-                    )}
-
-                    {step === 3 && (
-                        <div className="space-y-6">
-                            <div>
-                                <label htmlFor="profilePicture"
-                                       className="block text-sm font-medium text-gray-700 mb-2">
-                                    Profile Picture
-                                </label>
-                                <input
-                                    type="file"
-                                    id="profilePicture"
-                                    className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200"
-                                    required
-                                />
-                            </div>
-
-                            <div className="flex justify-between">
-                                <button
-                                    type="button"
-                                    onClick={prevStep}
-                                    className="bg-gray-200 text-gray-700 py-3 px-4 rounded-lg hover:bg-gray-300 transition duration-200 font-medium"
-                                >
-                                    Back
-                                </button>
-                                <button
-                                    type="button"
-                                    onClick={nextStep}
-                                    className="bg-blue-500 text-white py-3 px-4 rounded-lg hover:bg-blue-600 transition duration-200 font-medium"
-                                >
-                                    Next
-                                </button>
-                            </div>
-                        </div>
-                    )}
-
-                    {step === 4 && (
-                        <div className="space-y-6">
-                            <div>
-                                <label htmlFor="bio" className="block text-sm font-medium text-gray-700 mb-2">
-                                    Bio
-                                </label>
-                                <textarea
-                                    id="bio"
-                                    rows={4}
-                                    className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200"
-                                    placeholder="Tell us about yourself"
-                                    required
-                                ></textarea>
-                            </div>
-
-                            <div className="flex justify-between">
-                                <button
-                                    type="button"
-                                    onClick={prevStep}
-                                    className="bg-gray-200 text-gray-700 py-3 px-4 rounded-lg hover:bg-gray-300 transition duration-200 font-medium"
-                                >
-                                    Back
-                                </button>
-                                <button
-                                    type="submit"
-                                    className="bg-blue-500 text-white py-3 px-4 rounded-lg hover:bg-blue-600 transition duration-200 font-medium"
-                                >
-                                    Submit
-                                </button>
-                            </div>
-                        </div>
-                    )}
-
-                    <div className="mt-6 text-center">
-                        <p className="text-gray-600 mb-4">Already have an account?</p>
-                        <Link
-                            href="/login"
-                            className="inline-block w-full px-4 py-3 border border-blue-500 text-blue-500 rounded-lg hover:bg-blue-50 transition duration-200 font-medium"
-                        >
-                            Sign In
-                        </Link>
-                    </div>
-                </div>
+            </div>
         </div>
-</div>
-)
-    ;
-};
+    );
 
+
+};
 export default Page;

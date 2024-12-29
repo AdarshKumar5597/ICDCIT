@@ -15,3 +15,9 @@ export interface Feature {
   description: string;
   highlight?: string;
 }
+
+export interface AuthData {
+  token: string | null;
+  userId: number | null;
+  role: string | null;
+}

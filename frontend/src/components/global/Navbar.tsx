@@ -3,11 +3,14 @@ import Image from 'next/image';
 import React, { useState, useEffect } from 'react';
 import { Menu, X, ChevronDown } from 'lucide-react';
 import Link from 'next/link';
+import { useHealthcareStore } from '@/zustand/useHealthcareStore';
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  
+  const isLoggedIn = useHealthcareStore(state => state.loggedIn);
+  const setIsLoggedIn = useHealthcareStore(state => state.setLoggedIn);
 
   useEffect(() => {
     const handleScroll = () => {

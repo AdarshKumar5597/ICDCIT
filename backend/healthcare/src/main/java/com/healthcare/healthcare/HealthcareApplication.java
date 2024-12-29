@@ -10,5 +10,4 @@ public class HealthcareApplication {
 		SpringApplication.run(HealthcareApplication.class, args);
 		System.out.println("SERVER STARTED");
 	}
-
 }
