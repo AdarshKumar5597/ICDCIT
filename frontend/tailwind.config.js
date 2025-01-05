@@ -2,7 +2,16 @@
 module.exports = {
   content: ["./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
-    extend: {},
+    extend: {
+      utilities: {
+        ".scrollbar-hide": {
+          "scrollbar-width": "none",
+          "&::-webkit-scrollbar": {
+            display: "none",
+          },
+        },
+      },
+    },
   },
   plugins: [],
 };

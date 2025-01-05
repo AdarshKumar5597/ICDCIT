@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import Link from "next/link";
 import { Eye, EyeOff } from 'lucide-react';
 import toast from 'react-hot-toast';
-import { useRouter } from 'next/navigation';
+// import { useRouter } from 'next/navigation';
 import { useHealthcareStore } from '@/zustand/useHealthcareStore';
 
 const Page = () => {
@@ -15,7 +15,7 @@ const Page = () => {
     const setAuthData = useHealthcareStore(state => state.setAuthData);
     const setLoggedIn = useHealthcareStore(state => state.setLoggedIn);
 
-    const router = useRouter();
+    // const router = useRouter();
 
     const handleSignIn = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -140,7 +140,7 @@ const Page = () => {
                         </form>
 
                         <div className="mt-6 text-center">
-                            <p className="text-gray-600 mb-4">Don't have an account?</p>
+                            <p className="text-gray-600 mb-4">Don&apos;t have an account?</p>
                             <Link
                                 href="/signup"
                                 className="inline-block w-full px-4 py-3 border border-blue-500 text-blue-500 rounded-lg hover:bg-blue-50 transition duration-200 font-medium"
