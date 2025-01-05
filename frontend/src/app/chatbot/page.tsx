@@ -4,18 +4,38 @@ import { Copy, Check, Share, ArrowUp } from 'lucide-react';
 import toast from 'react-hot-toast';
 import Image from 'next/image';
 
+const recommendedCommunities = [
+    {
+        name: 'Health & Wellness',
+        description: 'Join our community for discussions on health, fitness, nutrition, and general well-being.',
+        link: '/community/health-wellness',
+    },
+    {
+        name: 'Technology Enthusiasts',
+        description: 'Connect with fellow tech enthusiasts to discuss the latest trends, gadgets, and innovations.',
+        link: '/community/technology-enthusiasts',
+    },
+    {
+        name: 'Mental Health Support',
+        description: 'Find support, resources, and a safe space to discuss mental health and well-being.',
+        link: '/community/mental-health-support',
+    }
+];
+
+
 interface Message {
     id: string
     text: string
     sender: 'user' | 'ai'
     isTyping?: boolean
+    communities?: typeof recommendedCommunities;
 }
 
 const dummyResponses = [
     "I am a language model AI developed by Pagal GPT. I can help you with a variety of topics, including health, technology, science, and more. Feel free to ask me anything!",
     "I'm sorry, I'm not sure what you're asking. Can you please provide more details or rephrase your question?",
     "Your question is a bit unclear. Can you please provide more context or details so I can better assist you?",
-    "If you're experiencing stomach pain, it's important to consider a few things. For mild pain, over-the-counter medications like antacids (e.g., Tums, Rolaids) or pain relievers (e.g., ibuprofen, acetaminophen) might help. Drinking plenty of water, avoiding spicy or acidic foods, and eating smaller, more frequent meals can also be beneficial. However, if the pain is severe, persistent, or accompanied by other symptoms like fever, vomiting, or blood in your stool, you should seek medical attention immediately. Always consult with a healthcare professional before taking any medication.",
+    "If you're experiencing stomach pain, it's important to consider a few things. For mild pain, over-the-counter severe, persistent, or accompanied by other symptoms like fever, vomiting.",
 ];
 
 const Page = () => {
@@ -35,59 +55,55 @@ const Page = () => {
 
     const simulateAIResponse = async () => {
         setIsTyping(true);
-          const loadingMessage: Message = {
-              id: crypto.randomUUID(),
-              text: '',
-              sender: 'ai',
-              isTyping: true
-          };
 
-          setMessages(prev => [...prev, loadingMessage]);
-
-          <div
-              className={`px-6 py-4 ${loadingMessage.sender === 'user'
-                  ? 'bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-2xl rounded-tr-sm'
-                  : 'bg-white text-gray-800 rounded-2xl rounded-tl-sm shadow-lg border'
-                  } transition-all duration-200 hover:shadow-md`}
-          >
-              {loadingMessage.isTyping ? (
-                  <div className="flex space-x-2">
-                      <div className="w-2 h-2 bg-zinc-500 rounded-full animate-bounce [animation-delay:-0.3s]"></div>
-                      <div className="w-2 h-2 bg-zinc-500 rounded-full animate-bounce [animation-delay:-0.15s]"></div>
-                      <div className="w-2 h-2 bg-zinc-500 rounded-full animate-bounce"></div>
-                  </div>
-              ) : (
-                  <p className="whitespace-pre-wrap leading-relaxed">{loadingMessage.text}</p>
-              )}
-          </div>
-
-        await new Promise(resolve => setTimeout(resolve, 3000));
-
-        setMessages(prev => prev.filter(msg => msg.id !== loadingMessage.id));
-
+        const dummyResponse = dummyResponses[Math.floor(Math.random() * dummyResponses.length)];
         const typingMessage: Message = {
             id: crypto.randomUUID(),
             text: '',
             sender: 'ai',
-            isTyping: false
+            isTyping: true,
         };
+        setMessages((prev) => [...prev, typingMessage]);
 
-        setMessages(prev => [...prev, typingMessage]);
-
-        const response = dummyResponses[Math.floor(Math.random() * dummyResponses.length)];
         let tempMessage = '';
+        for (let i = 0; i < dummyResponse.length; i++) {
+            await new Promise((resolve) => setTimeout(resolve, 10));
+            tempMessage += dummyResponse[i];
 
-        for (let i = 0; i < response.length; i++) {
-            await new Promise(resolve => setTimeout(resolve, 20));
-            tempMessage += response[i];
-
-            setMessages(prev =>
-                prev.map(msg =>
-                    msg.id === typingMessage.id
-                        ? { ...msg, text: tempMessage }
-                        : msg
+            setMessages((prev) =>
+                prev.map((msg) =>
+                    msg.id === typingMessage.id ? { ...msg, text: tempMessage } : msg
                 )
             );
+        }
+
+        setMessages((prev) =>
+            prev.map((msg) =>
+                msg.id === typingMessage.id ? { ...msg, isTyping: false } : msg
+            )
+        );
+
+        // Step 2: Add the message introducing the communities
+        const introMessage: Message = {
+            id: crypto.randomUUID(),
+            text: "Here are some communities you might find interesting:",
+            sender: 'ai',
+        };
+        await new Promise((resolve) => setTimeout(resolve, 500));
+        setMessages((prev) => [...prev, introMessage]);
+
+        // Step 3: Add communities one by one
+        for (let i = 0; i < recommendedCommunities.length; i++) {
+            await new Promise((resolve) => setTimeout(resolve, 1000));
+            setMessages((prev) => [
+                ...prev,
+                {
+                    id: crypto.randomUUID(),
+                    sender: 'ai',
+                    text: '',
+                    communities: [recommendedCommunities[i]],
+                },
+            ]);
         }
 
         setIsTyping(false);
@@ -109,14 +125,17 @@ const Page = () => {
         await simulateAIResponse();
     };
 
-    const handleCopyMessage = (text: string, id: string) => {
-        navigator.clipboard.writeText(text);
+    const handleCopyMessage = (text: string, id: string, communities?: typeof recommendedCommunities) => {
+        if (communities) {
+            const communityLink = communities[0]?.link;
+            navigator.clipboard.writeText(communityLink || text);
+        } else {
+            navigator.clipboard.writeText(text);
+        }
+
         setCopiedId(id);
-
-        console.log("copied item = ", copiedId);
-
         setTimeout(() => setCopiedId(null), 2000);
-        toast.success('Message copied to clipboard');
+        toast.success('Copied to clipboard');
     };
 
     const handleKeyPress = (e: React.KeyboardEvent) => {
@@ -187,12 +206,12 @@ const Page = () => {
         </div>
     );
     const MessageActions = ({ message }: { message: Message }) => (
-        <div className={`absolute bottom-0 left-0 right-0 translate-y-full pt-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex ${message.sender === 'user' ? 'justify-end' : 'justify-start'}`}>
-            <div className="flex items-center justify-start gap-2 px-2">
+        <div className={`absolute bottom-[10px] left-0 right-0 translate-y-[100%] pt-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex ${message.sender === 'user' ? 'justify-end' : 'justify-start'}`}>
+            <div className="flex items-center justify-start gap-2 px-2 mb-2">
                 {!message.isTyping && (
                     <button
-                        onClick={() => handleCopyMessage(message.text, message.id)}
-                        className={`p-1 rounded hover:bg-gray-200 text-gray-500`}
+                        onClick={() => handleCopyMessage(message.text, message.id, message.communities)}
+                        className={`p-1.5 mb-4 rounded-lg text-gray-500 shadow-sm`}
                     >
                         {copiedId === message.id ? <Check className="h-4 w-4 text-green-500" /> : <Copy className="h-4 w-4" />}
                     </button>
@@ -200,6 +219,7 @@ const Page = () => {
             </div>
         </div>
     );
+
     return (
         <div className="flex flex-col h-screen bg-gray-50">
             <div className="sticky top-0 z-10 p-6 border-b bg-white backdrop-blur-lg bg-opacity-80">
@@ -242,7 +262,26 @@ const Page = () => {
                                             : 'bg-white text-gray-800 rounded-2xl rounded-tl-sm shadow-lg border'
                                             } transition-all duration-200 hover:shadow-md`}
                                     >
-                                        <p className="whitespace-pre-wrap leading-relaxed">{message.text}</p>
+                                        {message.communities ? (
+                                            <div className="space-y-4">
+                                                {message.communities.map((community) => (
+                                                    <div key={community.name} className="p-3 rounded-lg shadow-md border hover:shadow-lg">
+                                                        <h3 className="text-lg font-semibold text-blue-600">
+                                                            <a href={community.link}>{community.name}</a>
+                                                        </h3>
+                                                        <p className="text-gray-600 text-sm">{community.description}</p>
+                                                        <a
+                                                            href={community.link}
+                                                            className="text-blue-500 hover:underline text-sm font-medium"
+                                                        >
+                                                            Visit Community
+                                                        </a>
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        ) : (
+                                            <p className="whitespace-pre-wrap leading-relaxed">{message.text}</p>
+                                        )}
                                     </div>
                                     <MessageActions message={message} />
                                 </div>
@@ -257,6 +296,8 @@ const Page = () => {
                                 )}
                             </div>
                         ))}
+
+
 
                         {isTyping && (
                             <div className="flex justify-start">
