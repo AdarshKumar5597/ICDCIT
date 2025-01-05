@@ -1,8 +1,8 @@
 "use client";
 import React, { useState } from 'react';
 import Link from "next/link";
-import axios, { AxiosResponse } from 'axios';
-import { FieldValues, set, useForm } from 'react-hook-form';
+import axios from 'axios';
+import { FieldValues, useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
 import { useRouter } from 'next/navigation';
 
@@ -77,7 +77,7 @@ const Page = () => {
                 return;
             }
 
-            const obj: any = {
+            const obj = {
                 userId: userId,
                 bio: bio,
                 proficiencies: proficiencies
