@@ -32,6 +32,7 @@ public class JwtTokenProvider {
         claims.put("fullName", userPrincipal.getFullName());
 
         return Jwts.builder()
+                .setSubject(userPrincipal.getUsername())
                 .setClaims(claims)
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + expiration))

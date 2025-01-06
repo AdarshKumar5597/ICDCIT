@@ -3,6 +3,7 @@ package com.healthcare.healthcare.service.auth;
 import com.healthcare.healthcare.model.Users;
 import com.healthcare.healthcare.repo.UserRepository;
 import com.healthcare.healthcare.model.UserPrincipal;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -10,6 +11,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 @Service
+@Transactional
 public class CustomUserDetailsService implements UserDetailsService {
 
     @Autowired
