@@ -32,9 +32,6 @@ interface Message {
 }
 
 const dummyResponses = [
-    "I am a language model AI developed by Pagal GPT. I can help you with a variety of topics, including health, technology, science, and more. Feel free to ask me anything!",
-    "I'm sorry, I'm not sure what you're asking. Can you please provide more details or rephrase your question?",
-    "Your question is a bit unclear. Can you please provide more context or details so I can better assist you?",
     "If you're experiencing stomach pain, it's important to consider a few things. For mild pain, over-the-counter severe, persistent, or accompanied by other symptoms like fever, vomiting.",
 ];
 
@@ -108,7 +105,6 @@ const Page = () => {
 
         setIsTyping(false);
     };
-
 
     const handleSend = async () => {
         if (!inputMessage.trim()) return;
@@ -265,7 +261,7 @@ const Page = () => {
                                         {message.communities ? (
                                             <div className="space-y-4">
                                                 {message.communities.map((community) => (
-                                                    <div key={community.name} className="p-3 rounded-lg shadow-md border hover:shadow-lg">
+                                                    <div key={community.name} >
                                                         <h3 className="text-lg font-semibold text-blue-600">
                                                             <a href={community.link}>{community.name}</a>
                                                         </h3>
@@ -296,8 +292,6 @@ const Page = () => {
                                 )}
                             </div>
                         ))}
-
-
 
                         {isTyping && (
                             <div className="flex justify-start">
