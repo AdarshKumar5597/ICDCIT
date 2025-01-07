@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import Image from 'next/image';
 import { formatTime } from '@/utils/utils';
 import { Message } from 'postcss';
@@ -11,6 +11,13 @@ interface MessagesAreaProps {
 
 const MessagesArea: React.FC<MessagesAreaProps> = ({ messages, currentUserId }) => {
     const msgContainer = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        if (msgContainer.current) {
+            console.log("hello scroll");
+            msgContainer.current!.scrollTop = msgContainer.current!.scrollHeight;
+        }
+    }, [messages])
 
     return (
         <div

@@ -1,5 +1,5 @@
 'use client'
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import toast from 'react-hot-toast';
 import { communitiesData } from '@/data/data';
 import ChatArea from '@/components/Chat/ChatArea';
@@ -11,25 +11,29 @@ import PopupModal from '@/components/global/PopupModal';
 import CommunityPopup from '@/components/Chat/CommunityPopup';
 
 const ChatInterface = () => {
-    const [communities, setCommunities] = useState<Community[]>(communitiesData);
+    const [communities, setCommunities] = useState<Community[]>(communitiesData);//all communities
     const [searchQuery, setSearchQuery] = useState<string>("");
+    const [userCommunities, setUserCommunities] = useState<Community[]>([]);
     const [currentCommunity, setCurrentCommunity] = useState<Community>(communities[0]);
     const [message, setMessage] = useState<string>("");
+    const [showEmoji, setShowEmoji] = useState<boolean>(false);
     const [isLeftSidebarOpen, setIsLeftSidebarOpen] = useState<boolean>(true);
     const [isRightSidebarOpen, setIsRightSidebarOpen] = useState<boolean>(false);
-    const inputRef = useRef<HTMLInputElement>(null);
-    const [showEmoji, setShowEmoji] = useState(false);
     const [openCreateCommunityPopup, setOpenCreateCommunityPopup] = useState<boolean>(false);
+    const userId = 4; // temp curr user id for testing purposes (my community wgrh determined by if user id 4 msg is there)
+
+    useEffect(() => {
+        setUserCommunities(communities.filter((community) => {
+            return community.members.some((member) => member.id === userId);
+        }));
+    }, [communities, userId]);
 
     useEffect(() => {
         setIsRightSidebarOpen(false);
     }, [currentCommunity])
 
-    useEffect(() => {
-        inputRef.current?.focus();
-    }, []);
-
     const handleSendMessage = () => {
+
         if (!message.trim()) return;
 
         const newMessage = {
@@ -63,7 +67,7 @@ const ChatInterface = () => {
         navigator.clipboard.writeText(link);
         toast.success('Community link copied!');
     };
-    
+
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const addEmoji = (emojiData: any) => {
         const emoji = emojiData.native;
@@ -113,6 +117,7 @@ const ChatInterface = () => {
             <div className="flex mt-16 h-[calc(100vh-5rem)] bg-gray-50 max-w-[100vw] overflow-hidden">
                 <LeftSidebar
                     communities={communities}
+                    userCommunities={userCommunities}
                     currentCommunity={currentCommunity}
                     setCurrentCommunity={setCurrentCommunity}
                     searchQuery={searchQuery}

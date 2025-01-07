@@ -1,10 +1,12 @@
-import React, { useRef } from 'react';
+import React, { useRef, useEffect } from 'react';
 import { Send, Smile, Image as ImageIcon } from 'lucide-react';
 import Picker from '@emoji-mart/react';
 import data from '@emoji-mart/data';
+import { Community } from '@/types/types';
 
 interface MessageInputProps {
-    message: string;
+    currentCommunity: Community;
+    message: string,
     setMessage: (message: string) => void;
     showEmoji: boolean;
     toggleEmojiPicker: () => void;
@@ -15,6 +17,7 @@ interface MessageInputProps {
 }
 
 const MessageInput: React.FC<MessageInputProps> = ({
+    currentCommunity,
     message,
     setMessage,
     showEmoji,
@@ -24,9 +27,16 @@ const MessageInput: React.FC<MessageInputProps> = ({
     addEmoji,
 }) => {
     const inputRef = useRef<HTMLInputElement>(null);
+    useEffect(() => {
+        if (inputRef.current) {
+            inputRef.current.focus();
+            inputRef.current.value = '';
+        }
+    }, [currentCommunity.messages]);
 
     return (
-        <div className="bg-white p-4 border-t">
+        <div
+         className="bg-white p-4 border-t">
             <div className="flex items-center space-x-3">
                 <div className="flex-1 bg-gray-50 rounded-xl flex items-center p-3 border focus-within:border-blue-500 transition-all relative">
                     <Smile

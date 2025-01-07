@@ -1,54 +1,328 @@
 export const communitiesData = [
-    {
+  {
+    id: 1,
+    name: "Mental Health Support",
+    image: "/images/chat/mentalhealth.png",
+    summary:
+      "Recent discussions focused on stress management techniques, mindfulness practices, and building healthy coping mechanisms.",
+    members: [
+      {
         id: 1,
-        name: "Mental Health Support",
-        image: "/images/chat/mentalhealth.png",
-        summary: "Recent discussions focused on stress management techniques, mindfulness practices, and building healthy coping mechanisms. Members have been actively sharing their experiences and supporting each other. Topics include dealing with anxiety, depression, and other mental health challenges. The community also shares resources such as articles, videos, and personal stories to help each other.",
-        members: [
-            { id: 1, name: "Dr. Sarah Johnson", role: "Admin", avatar: "/images/chat/femaledoctor.png" },
-            { id: 2, name: "Dr. Michael Brown", role: "Moderator", avatar: "/images/chat/drbrown.png" },
-            { id: 3, name: "Jane Smith", role: "Member", avatar: "/images/chat/femaledoctor.png" }
-        ],
-        messages: [
-            {
-                id: 1,
-                userId: 1,
-                userName: "Dr. Sarah Johnson",
-                userAvatar: "/images/chat/femaledoctor.png",
-                content: "Welcome to our Mental Health Support group! How is everyone doing today? Remember, this is a safe space for sharing and support. 🌟",
-                timestamp: "2024-01-06T09:00:00Z",
-                isImage: false
-            },
-            {
-                id: 2,
-                userId: 2,
-                userName: "Dr. Michael Brown",
-                userAvatar: "/images/chat/drbrown.png",
-                content: "/images/community.png",
-                timestamp: "2024-01-06T09:05:00Z",
-                isImage: true
-            }
-        ]
-    },
-    {
+        name: "Dr. Sarah Johnson",
+        role: "Admin",
+        avatar: "/images/chat/femaledoctor.png",
+      },
+      {
         id: 2,
-        name: "Wellness & Exercise",
-        image: "/images/chat/wellness.png",
-        summary: "Group members have been sharing workout routines, discussing nutrition tips, and supporting each other's fitness goals. Recent topics include home workouts and healthy meal planning. Members also share their progress, motivational tips, and challenges they face in maintaining a healthy lifestyle. The community encourages each other to stay active and eat healthily.",
-        members: [
-            { id: 4, name: "Dr. Emily Davis", role: "Admin", avatar: "/images/chat/dremily.png" },
-            { id: 5, name: "John Doe", role: "Member", avatar: "/images/patient.png" }
-        ],
-        messages: [
-            {
-                id: 1,
-                userId: 4,
-                userName: "Dr. Emily Davis",
-                userAvatar: "/images/chat/dremily.png",
-                content: "Let's discuss weekly exercise goals! 💪",
-                timestamp: "2024-01-06T10:00:00Z",
-                isImage: false
-            }
-        ]
-    }
+        name: "Dr. Michael Brown",
+        role: "Moderator",
+        avatar: "/images/chat/drbrown.png",
+      },
+      {
+        id: 3,
+        name: "Jane Smith",
+        role: "Member",
+        avatar: "/images/chat/femaledoctor.png",
+      },
+    ],
+    messages: [
+      {
+        id: 1,
+        userId: 1,
+        userName: "Dr. Sarah Johnson",
+        userAvatar: "/images/chat/femaledoctor.png",
+        content:
+          "Welcome to today's discussion on managing anxiety! Let's share some effective coping strategies 🌟",
+        timestamp: "2024-01-06T09:00:00Z",
+        isImage: false,
+      },
+      {
+        id: 2,
+        userId: 3,
+        userName: "Jane Smith",
+        userAvatar: "/images/chat/femaledoctor.png",
+        content:
+          "I've found meditation really helpful. 10 minutes every morning has made a huge difference!",
+        timestamp: "2024-01-06T09:05:00Z",
+        isImage: false,
+      },
+      {
+        id: 3,
+        userId: 2,
+        userName: "Dr. Michael Brown",
+        userAvatar: "/images/chat/drbrown.png",
+        content:
+          "Excellent point about meditation. Here's a guided meditation resource:",
+        timestamp: "2024-01-06T09:10:00Z",
+        isImage: false,
+      },
+      {
+        id: 4,
+        userId: 2,
+        userName: "Dr. Michael Brown",
+        userAvatar: "/images/chat/drbrown.png",
+        content: "/images/meditation-guide.png",
+        timestamp: "2024-01-06T09:11:00Z",
+        isImage: true,
+      },
+      {
+        id: 5,
+        userId: 1,
+        userName: "Dr. Sarah Johnson",
+        userAvatar: "/images/chat/femaledoctor.png",
+        content: "Remember, consistency is key in mental health practices! 🌈",
+        timestamp: "2024-01-06T09:15:00Z",
+        isImage: false,
+      },
+    ],
+  },
+  {
+    id: 2,
+    name: "Wellness & Exercise",
+    image: "/images/chat/wellness.png",
+    summary:
+      "Group focused on physical wellness, exercise routines, and maintaining an active lifestyle.",
+    members: [
+      {
+        id: 4,
+        name: "Dr. Emily Davis",
+        role: "Admin",
+        avatar: "/images/chat/dremily.png",
+      },
+      {
+        id: 5,
+        name: "John Doe",
+        role: "Member",
+        avatar: "/images/patient.png",
+      },
+    ],
+    messages: [
+      {
+        id: 1,
+        userId: 4,
+        userName: "Dr. Emily Davis",
+        userAvatar: "/images/chat/dremily.png",
+        content: "Today's focus: Home exercises for better posture! 💪",
+        timestamp: "2024-01-06T10:00:00Z",
+        isImage: false,
+      },
+      {
+        id: 2,
+        userId: 5,
+        userName: "John Doe",
+        userAvatar: "/images/patient.png",
+        content: "My back pain has improved since starting these exercises!",
+        timestamp: "2024-01-06T10:15:00Z",
+        isImage: false,
+      },
+      {
+        id: 3,
+        userId: 4,
+        userName: "Dr. Emily Davis",
+        userAvatar: "/images/chat/dremily.png",
+        content: "/images/posture-exercises.png",
+        timestamp: "2024-01-06T10:20:00Z",
+        isImage: true,
+      },
+      {
+        id: 4,
+        userId: 4,
+        userName: "Dr. Emily Davis",
+        userAvatar: "/images/chat/dremily.png",
+        content: "Here's a visual guide for proper form during exercises",
+        timestamp: "2024-01-06T10:21:00Z",
+        isImage: false,
+      },
+    ],
+  },
+  {
+    id: 3,
+    name: "Nutrition & Diet Support",
+    image: "/images/chat/wellness.png",
+    summary:
+      "Community focused on healthy eating habits and nutritional guidance.",
+    members: [
+      {
+        id: 6,
+        name: "Dr. Lisa Chen",
+        role: "Admin",
+        avatar: "/images/chat/femaledoctor.png",
+      },
+      {
+        id: 7,
+        name: "Mark Wilson",
+        role: "Member",
+        avatar: "/images/patient.png",
+      },
+    ],
+    messages: [
+      {
+        id: 1,
+        userId: 6,
+        userName: "Dr. Lisa Chen",
+        userAvatar: "/images/chat/femaledoctor.png",
+        content:
+          "Let's discuss balanced meal planning! Share your favorite healthy recipes 🥗",
+        timestamp: "2024-01-06T11:00:00Z",
+        isImage: false,
+      },
+      {
+        id: 2,
+        userId: 7,
+        userName: "Mark Wilson",
+        userAvatar: "/images/patient.png",
+        content: "Here's my weekly meal prep plan:",
+        timestamp: "2024-01-06T11:05:00Z",
+        isImage: false,
+      },
+      {
+        id: 3,
+        userId: 7,
+        userName: "Mark Wilson",
+        userAvatar: "/images/patient.png",
+        content: "/images/meal-plan.png",
+        timestamp: "2024-01-06T11:06:00Z",
+        isImage: true,
+      },
+    ],
+  },
+  {
+    id: 4,
+    name: "Sleep Health",
+    image: "/images/chat/wellness.png",
+    summary:
+      "Discussion forum for sleep-related issues and healthy sleep habits.",
+    members: [
+      {
+        id: 8,
+        name: "Dr. Maria Garcia",
+        role: "Admin",
+        avatar: "/images/chat/femaledoctor.png",
+      },
+    ],
+    messages: [
+      {
+        id: 1,
+        userId: 8,
+        userName: "Dr. Maria Garcia",
+        userAvatar: "/images/chat/femaledoctor.png",
+        content: "Today's topic: Creating the perfect bedtime routine 😴",
+        timestamp: "2024-01-06T20:00:00Z",
+        isImage: false,
+      },
+      {
+        id: 2,
+        userId: 8,
+        userName: "Dr. Maria Garcia",
+        userAvatar: "/images/chat/femaledoctor.png",
+        content: "/images/sleep-tips.png",
+        timestamp: "2024-01-06T20:01:00Z",
+        isImage: true,
+      },
+    ],
+  },
+  {
+    id: 5,
+    name: "Chronic Pain Management",
+    image: "/images/chat/mentalhealth.png",
+    summary: "Support group for managing chronic pain conditions.",
+    members: [
+      {
+        id: 9,
+        name: "Dr. Robert Kim",
+        role: "Admin",
+        avatar: "/images/chat/drbrown.png",
+      },
+    ],
+    messages: [
+      {
+        id: 1,
+        userId: 9,
+        userName: "Dr. Robert Kim",
+        userAvatar: "/images/chat/drbrown.png",
+        content: "Let's explore gentle stretching exercises for pain relief 🌟",
+        timestamp: "2024-01-06T14:00:00Z",
+        isImage: false,
+      },
+      {
+        id: 2,
+        userId: 9,
+        userName: "Dr. Robert Kim",
+        userAvatar: "/images/chat/drbrown.png",
+        content: "/images/stretching-guide.png",
+        timestamp: "2024-01-06T14:01:00Z",
+        isImage: true,
+      },
+    ],
+  },
+  {
+    id: 6,
+    name: "Heart Health",
+    image: "/images/chat/wellness.png",
+    summary:
+      "Discussion group for cardiovascular health and prevention strategies.",
+    members: [
+      {
+        id: 10,
+        name: "Dr. Susan White",
+        role: "Admin",
+        avatar: "/images/chat/femaledoctor.png",
+      },
+    ],
+    messages: [
+      {
+        id: 1,
+        userId: 10,
+        userName: "Dr. Susan White",
+        userAvatar: "/images/chat/femaledoctor.png",
+        content: "Today's focus: Heart-healthy diet choices ❤️",
+        timestamp: "2024-01-06T15:00:00Z",
+        isImage: false,
+      },
+      {
+        id: 2,
+        userId: 10,
+        userName: "Dr. Susan White",
+        userAvatar: "/images/chat/femaledoctor.png",
+        content: "/images/heart-healthy-foods.png",
+        timestamp: "2024-01-06T15:01:00Z",
+        isImage: true,
+      },
+    ],
+  },
+  {
+    id: 7,
+    name: "Diabetes Management",
+    image: "/images/chat/mentalhealth.png",
+    summary:
+      "Support community for managing diabetes and lifestyle adjustments.",
+    members: [
+      {
+        id: 11,
+        name: "Dr. Thomas Brown",
+        role: "Admin",
+        avatar: "/images/chat/drbrown.png",
+      },
+    ],
+    messages: [
+      {
+        id: 1,
+        userId: 11,
+        userName: "Dr. Thomas Brown",
+        userAvatar: "/images/chat/drbrown.png",
+        content: "Let's discuss blood sugar monitoring tips and tricks 📊",
+        timestamp: "2024-01-06T16:00:00Z",
+        isImage: false,
+      },
+      {
+        id: 2,
+        userId: 11,
+        userName: "Dr. Thomas Brown",
+        userAvatar: "/images/chat/drbrown.png",
+        content: "/images/glucose-monitoring.png",
+        timestamp: "2024-01-06T16:01:00Z",
+        isImage: true,
+      },
+    ],
+  },
 ];

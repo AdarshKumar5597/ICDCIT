@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import ChatHeader from './ChatHeader';
 import MessagesArea from './MessagesArea';
 import MessageInput from './MessageInput';
@@ -30,8 +30,19 @@ const ChatArea: React.FC<ChatAreaProps> = ({
     isRightSidebarOpen,
     addEmoji,
 }) => {
+    const chatContainer = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        if (chatContainer.current) {
+            setTimeout(() => {
+                chatContainer.current!.scrollTop = chatContainer.current!.scrollHeight;
+            }, 100);
+        }
+    }, [currentCommunity.messages])
+
     return (
-        <div className={`flex-1 flex flex-col bg-white min-w-0`}>
+        <div
+            className={`flex-1 flex flex-col bg-white min-w-0 overflow-y-auto`}>
             <ChatHeader
                 communityImage={currentCommunity.image}
                 communityName={currentCommunity.name}
@@ -43,6 +54,7 @@ const ChatArea: React.FC<ChatAreaProps> = ({
                 currentUserId={1}
             />
             <MessageInput
+                currentCommunity={currentCommunity}
                 message={message}
                 setMessage={setMessage}
                 showEmoji={showEmoji}
