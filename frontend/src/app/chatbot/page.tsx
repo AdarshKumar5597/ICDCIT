@@ -22,7 +22,6 @@ const recommendedCommunities = [
     }
 ];
 
-
 interface Message {
     id: string
     text: string

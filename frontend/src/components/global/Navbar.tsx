@@ -29,7 +29,7 @@ const Navbar = () => {
       <nav className={`fixed top-0 w-full z-[100] transition-all duration-300 ${isScrolled ? 'bg-white/95 backdrop-blur-sm shadow-lg' : 'bg-white'
         }`}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-20">
+          <div className="flex justify-between items-center h-16">
             <Link href='/' className="flex-shrink-0 flex items-center gap-3">
               <Image
                 src="/icons/logo.png"
@@ -60,13 +60,13 @@ const Navbar = () => {
                 </button>
                 <div className="absolute top-full -left-4 w-48 bg-white shadow-lg rounded-lg py-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300">
                   <Link href="/consultations" className="block px-4 py-2 hover:bg-blue-50 hover:text-blue-600 transition-colors">Doctor Consultations</Link>
-                  <Link href="/ai-assistant" className="block px-4 py-2 hover:bg-blue-50 hover:text-blue-600 transition-colors">AI Health Assistant</Link>
+                  <Link href="/chatbot" className="block px-4 py-2 hover:bg-blue-50 hover:text-blue-600 transition-colors">AI Health Assistant</Link>
                   <Link href="/group-chat" className="block px-4 py-2 hover:bg-blue-50 hover:text-blue-600 transition-colors">Group Chat</Link>
                 </div>
               </div>
-              <Link href="/about" className="hover:text-blue-600 transition-colors">About</Link>
-              <Link href="/career" className="hover:text-blue-600 transition-colors">Career</Link>
-              <Link href="/contact" className="hover:text-blue-600 transition-colors">Contact</Link>
+              <Link href="/chatbot" className="hover:text-blue-600 transition-colors">ChatBot</Link>
+              <Link href="/community" className="hover:text-blue-600 transition-colors">Community</Link>
+              <Link href="/chat" className="hover:text-blue-600 transition-colors">Chat</Link>
             </div>
 
             <div className="hidden md:flex items-center gap-4">

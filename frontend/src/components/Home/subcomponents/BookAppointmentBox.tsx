@@ -2,7 +2,7 @@ import React from 'react'
 
 const BookAppointmentBox = () => {
     return (
-        <div className="mt-16 sm:mt-20 bg-gradient-to-r from-blue-500 to-blue-600 rounded-2xl p-6 sm:p-8 text-white">
+        <div className="mt-16 bg-gradient-to-r from-blue-500 to-blue-600 rounded-2xl p-6 sm:p-8 text-white">
             <div className="flex flex-col lg:flex-row items-center justify-between gap-6">
                 <div>
                     <h3 className="text-xl sm:text-2xl font-semibold mb-2 text-center lg:text-left">Ready to book your appointment?</h3>

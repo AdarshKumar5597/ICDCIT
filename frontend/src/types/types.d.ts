@@ -21,3 +21,35 @@ export interface AuthData {
   userId: number | null;
   role: string | null;
 }
+
+export interface Community {
+  id: number;
+  name: string;
+  image: string;
+  summary: string;
+  members: {
+    id: number;
+    name: string;
+    role: string;
+    avatar: string;
+  }[];
+  messages: {
+    id: number;
+    userId: number;
+    userName: string;
+    userAvatar: string;
+    content: string;
+    timestamp: string;
+    isImage: boolean;
+  }[];
+}
+
+export interface Message {
+  id: number;
+  userId: number;
+  userName: string;
+  userAvatar: string;
+  content: string;
+  timestamp: string;
+  isImage: boolean;
+}

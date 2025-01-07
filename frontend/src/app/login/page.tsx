@@ -57,7 +57,7 @@ const Page = () => {
     };
 
     return (
-        <div className="bg-gradient-to-br from-blue-50 to-white min-h-screen pt-24 px-4 sm:px-6 lg:px-8">
+        <div className="min-h-screen pt-24 px-4 sm:px-6 lg:px-8">
             <div className="max-w-6xl w-full mx-auto grid lg:grid-cols-2 gap-12 items-center">
                 <div className="text-center lg:text-left">
                     <h1 className="text-4xl font-bold text-blue-950 mb-4">
