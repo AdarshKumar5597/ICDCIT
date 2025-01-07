@@ -19,7 +19,7 @@ const PageNotFound = () => {
                 </h2>
 
                 <p className="text-gray-600 text-lg max-w-md mx-auto mb-8">
-                    The page you&apos;re looking for seems to have taken an unexpected vacation. Let's get you back on track.
+                    The page you&apos;re looking for seems to have taken an unexpected vacation. Let&apos;s get you back on track.
                 </p>
 
                 <Link href={'/'} className="flex flex-wrap justify-center gap-4">

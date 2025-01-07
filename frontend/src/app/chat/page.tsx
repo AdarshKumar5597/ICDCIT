@@ -63,7 +63,8 @@ const ChatInterface = () => {
         navigator.clipboard.writeText(link);
         toast.success('Community link copied!');
     };
-
+    
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const addEmoji = (emojiData: any) => {
         const emoji = emojiData.native;
         setMessage(message + emoji);

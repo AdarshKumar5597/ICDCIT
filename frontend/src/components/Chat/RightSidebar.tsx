@@ -1,6 +1,6 @@
 import React from 'react';
 import { Community } from '@/types/types';
-import { ArrowRight, Copy, X } from 'lucide-react';
+import { ArrowRight, Copy } from 'lucide-react';
 import { ActivityOverview } from './ActivityOverview';
 import { DiscussionSummary } from './DiscussionSummary';
 import { MembersSection } from './MembersSection';

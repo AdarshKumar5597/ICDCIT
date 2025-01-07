@@ -10,6 +10,7 @@ interface MessageInputProps {
     toggleEmojiPicker: () => void;
     handleSendMessage: () => void;
     handleImageSelect: (e: React.ChangeEvent<HTMLInputElement>) => void;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     addEmoji: (emojiData: any) => void;
 }
 
@@ -36,6 +37,7 @@ const MessageInput: React.FC<MessageInputProps> = ({
                         <div className="absolute bottom-12 left-0">
                             <Picker
                                 data={data}
+                                // eslint-disable-next-line @typescript-eslint/no-explicit-any
                                 onEmojiSelect={addEmoji}
                                 emojiSize={20}
                                 emojiButtonSize={28}

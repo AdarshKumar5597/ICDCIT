@@ -14,6 +14,7 @@ interface ChatAreaProps {
     handleImageSelect: (e: React.ChangeEvent<HTMLInputElement>) => void;
     setIsRightSidebarOpen: (isOpen: boolean) => void;
     isRightSidebarOpen: boolean;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     addEmoji: (emojiData: any) => void;
 }
 
