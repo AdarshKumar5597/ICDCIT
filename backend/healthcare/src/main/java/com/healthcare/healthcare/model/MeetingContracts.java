@@ -33,11 +33,11 @@ public class MeetingContracts {
     @Column(name = "status", nullable = false)
     private Status status = Status.PENDING;
 
-    @Column(name = "completed_by_patient", nullable = false)
+    @Column(name = "completed_by_patient", columnDefinition = "boolean")
     private Boolean completedByPatient = false;
 
-    @Column(name = "completed_by_doctor", nullable = false)
-    private Byte completedByDoctor;
+    @Column(name = "completed_by_doctor", columnDefinition = "boolean")
+    private Boolean completedByDoctor;
 
     @Column(name = "created_at", nullable = false, updatable = false)
     private Date createdAt;
