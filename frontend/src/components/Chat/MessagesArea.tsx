@@ -22,7 +22,7 @@ const MessagesArea: React.FC<MessagesAreaProps> = ({ messages, currentUserId }) 
     return (
         <div
             ref={msgContainer}
-            className="flex-1 overflow-y-auto p-6 space-y-6 bg-gray-50 flex flex-col"
+            className="flex-1 overflow-y-auto overflow-x-hidden p-6 space-y-6 bg-gray-50 flex flex-col"
         >
             {messages.map((msg) => (
                 <div

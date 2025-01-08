@@ -53,3 +53,16 @@ export interface Message {
   timestamp: string;
   isImage: boolean;
 }
+
+export interface Doctor {
+    id: string;
+    name: string;
+    bio: string;
+    profilePhoto: string;
+    proficiencies: string[];
+    rating: number;
+    experience: number;
+    nextAvailable: string;
+    consultationFee: number;
+    location: string;
+}

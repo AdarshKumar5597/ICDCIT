@@ -7,8 +7,8 @@ import { Community } from '@/types/types';
 import { RightSidebar } from '@/components/Chat/RightSidebar';
 import LeftSidebar from '@/components/Chat/LeftSidebar';
 import { AnimatePresence } from 'framer-motion';
-import PopupModal from '@/components/global/PopupModal';
 import CommunityPopup from '@/components/Chat/CommunityPopup';
+import { motion } from 'framer-motion';
 
 const ChatInterface = () => {
     const [communities, setCommunities] = useState<Community[]>(communitiesData);//all communities
@@ -108,11 +108,17 @@ const ChatInterface = () => {
         <>
             <AnimatePresence>
                 {openCreateCommunityPopup && (
-                    <PopupModal setIsOpen={setOpenCreateCommunityPopup}>
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        transition={{ duration: 0.2 }}
+                        className="fixed inset-0 bg-black/20 z-50 flex items-center justify-center p-4"
+                    >
                         <CommunityPopup onClose={() => setOpenCreateCommunityPopup(false)} />
-                    </PopupModal>
+                    </motion.div>
                 )}
-            </AnimatePresence>
+            </AnimatePresence >
 
             <div className="flex mt-16 h-[calc(100vh-5rem)] bg-gray-50 max-w-[100vw] overflow-hidden">
                 <LeftSidebar

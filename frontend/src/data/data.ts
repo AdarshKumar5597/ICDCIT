@@ -1,3 +1,5 @@
+import { Doctor } from "@/types/types";
+
 export const communitiesData = [
   {
     id: 1,
@@ -324,5 +326,68 @@ export const communitiesData = [
         isImage: true,
       },
     ],
+  },
+];
+
+export const mockDoctors: Doctor[] = [
+  {
+    id: "1",
+    name: "Dr. Sarah Johnson",
+    bio: "Experienced cardiologist with focus on preventive care and heart health management.",
+    profilePhoto: "/images/doctors/doctor1.png",
+    proficiencies: ["Cardiology", "Heart Surgery", "Vascular Medicine"],
+    rating: 4.9,
+    experience: 15,
+    nextAvailable: "Tomorrow, 10:00 AM",
+    consultationFee: 1500,
+    location: "New Delhi",
+  },
+  {
+    id: "2",
+    name: "Dr. Michael Chen",
+    bio: "Specialized neurologist with expertise in treating complex neurological disorders.",
+    profilePhoto: "/images/doctors/doctor2.png",
+    proficiencies: ["Neurology", "Brain Surgery", "Stroke Care"],
+    rating: 4.8,
+    experience: 12,
+    nextAvailable: "Today, 4:30 PM",
+    consultationFee: 2000,
+    location: "Mumbai",
+  },
+  {
+    id: "3",
+    name: "Dr. Emily Williams",
+    bio: "Expert dermatologist specializing in advanced skin treatments and cosmetic procedures.",
+    profilePhoto: "/images/doctors/doctor1.png",
+    proficiencies: ["Dermatology", "Cosmetic Surgery", "Skin Care"],
+    rating: 4.7,
+    experience: 8,
+    nextAvailable: "Tomorrow, 2:00 PM",
+    consultationFee: 1800,
+    location: "Bangalore",
+  },
+  {
+    id: "4",
+    name: "Dr. James Wilson",
+    bio: "Orthopedic surgeon with specialization in sports medicine and joint replacements.",
+    profilePhoto: "/images/doctors/doctor2.png",
+    proficiencies: ["Orthopedics", "Sports Medicine", "Joint Surgery"],
+    rating: 4.9,
+    experience: 14,
+    nextAvailable: "Today, 6:00 PM",
+    consultationFee: 2500,
+    location: "Chennai",
+  },
+  {
+    id: "5",
+    name: "Dr. Lisa Anderson",
+    bio: "Pediatric specialist with extensive experience in child healthcare and development.",
+    profilePhoto: "/images/doctors/doctor1.png",
+    proficiencies: ["Pediatrics", "Child Development", "Vaccination"],
+    rating: 4.8,
+    experience: 10,
+    nextAvailable: "Tomorrow, 11:30 AM",
+    consultationFee: 1700,
+    location: "Hyderabad",
   },
 ];
