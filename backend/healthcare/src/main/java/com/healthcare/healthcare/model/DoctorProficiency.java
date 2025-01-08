@@ -21,28 +21,4 @@ public class DoctorProficiency {
 
     @Column(name = "proficiency_id")
     private Long proficiencyId;
-
-    public Long getDoctorProficiencyId() {
-        return doctorProficiencyId;
-    }
-
-    public void setDoctorProficiencyId(Long doctorProficiencyId) {
-        this.doctorProficiencyId = doctorProficiencyId;
-    }
-
-    public Long getDoctorId() {
-        return doctorId;
-    }
-
-    public void setDoctorId(Long doctorId) {
-        this.doctorId = doctorId;
-    }
-
-    public Long getProficiencyId() {
-        return proficiencyId;
-    }
-
-    public void setProficiencyId(Long proficiencyId) {
-        this.proficiencyId = proficiencyId;
-    }
 }

@@ -10,7 +10,7 @@ import com.healthcare.healthcare.model.Doctor;
 import com.healthcare.healthcare.model.DoctorProficiency;
 import com.healthcare.healthcare.model.Proficiency;
 import com.healthcare.healthcare.model.Users;
-import com.healthcare.healthcare.repo.DoctorProficiencyRepository;
+import com.healthcare.healthcare.repo.DoctorProficiencyRepo;
 import com.healthcare.healthcare.repo.DoctorRepository;
 import com.healthcare.healthcare.repo.ProficiencyRepository;
 import com.healthcare.healthcare.repo.UserRepository;
@@ -54,7 +54,7 @@ public class AuthService {
     private ProficiencyRepository proficiencyRepository;
 
     @Autowired
-    private DoctorProficiencyRepository doctorProficiencyRepository;
+    private DoctorProficiencyRepo doctorProficiencyRepository;
 
     @Autowired
     private GeminiApiService geminiApiService;
