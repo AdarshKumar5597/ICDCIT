@@ -5,8 +5,6 @@ import { motion } from 'framer-motion'
 
 const CommunityPopup = ({ onClose }: { onClose: () => void }) => {
     const [imagePreview, setImagePreview] = useState<string | null>(null)
-    const [isOutSideClick, setIsOutSideClick] = useState(false)
-    const [isInnerClick, setIsInnerClick] = useState(false)
 
     const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0]
@@ -19,22 +17,13 @@ const CommunityPopup = ({ onClose }: { onClose: () => void }) => {
         }
     }
 
-    useEffect(() => {
-        if (isOutSideClick && !isInnerClick) {
-            onClose()
-        }
-        setIsOutSideClick(false)
-        setIsInnerClick(false)
-    }, [isOutSideClick, isInnerClick])
-
     return (
-        <div onClick={() => setIsOutSideClick(true)} className="fixed inset-0 bg-black/20 z-50 flex items-center justify-center p-4">
+        <div className="fixed inset-0 bg-black/20 z-50 flex items-center justify-center p-4">
             <motion.div
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.9 }}
                 transition={{ duration: 0.2 }}
-                onClick={() => setIsInnerClick(true)}
                 className="bg-white rounded-2xl shadow-xl w-full max-w-md relative"
             >
                 <button

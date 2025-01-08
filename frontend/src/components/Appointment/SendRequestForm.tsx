@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { X } from 'lucide-react'
+import { X, Video, Users } from 'lucide-react'
 import { motion } from 'framer-motion'
 
 const SendRequestForm = ({ onClose }: { onClose: () => void }) => {
@@ -31,25 +31,42 @@ const SendRequestForm = ({ onClose }: { onClose: () => void }) => {
 
                 <div className="space-y-4">
                     <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1.5">Meeting Type</label>
-                        <div className="flex gap-4">
+                        <label className="block text-sm font-medium text-gray-700 mb-3">Meeting Type</label>
+                        <div className="grid grid-cols-2 gap-3">
                             <button
                                 onClick={() => setMeetingType('online')}
-                                className={`flex-1 py-2.5 rounded-xl border ${meetingType === 'online'
-                                    ? 'bg-blue-500 text-white border-blue-500'
-                                    : 'border-gray-200 text-gray-700 hover:bg-gray-50'
-                                    } transition-all`}
+                                className={`relative p-4 rounded-xl border-2 transition-all duration-200 ${meetingType === 'online'
+                                        ? 'border-blue-500 bg-blue-50'
+                                        : 'border-gray-200 hover:border-gray-300'
+                                    }`}
                             >
-                                Online
+                                <div className="flex flex-col items-center gap-2">
+                                    <Video className={`w-6 h-6 ${meetingType === 'online' ? 'text-blue-500' : 'text-gray-600'
+                                        }`} />
+                                    <span className={`font-medium ${meetingType === 'online' ? 'text-blue-500' : 'text-gray-700'
+                                        }`}>Online</span>
+                                </div>
+                                {meetingType === 'online' && (
+                                    <div className="absolute top-2 right-2 w-2 h-2 bg-blue-500 rounded-full" />
+                                )}
                             </button>
+
                             <button
                                 onClick={() => setMeetingType('offline')}
-                                className={`flex-1 py-2.5 rounded-xl border ${meetingType === 'offline'
-                                    ? 'bg-blue-500 text-white border-blue-500'
-                                    : 'border-gray-200 text-gray-700 hover:bg-gray-50'
-                                    } transition-all`}
+                                className={`relative p-4 rounded-xl border-2 transition-all duration-200 ${meetingType === 'offline'
+                                        ? 'border-blue-500 bg-blue-50'
+                                        : 'border-gray-200 hover:border-gray-300'
+                                    }`}
                             >
-                                Offline
+                                <div className="flex flex-col items-center gap-2">
+                                    <Users className={`w-6 h-6 ${meetingType === 'offline' ? 'text-blue-500' : 'text-gray-600'
+                                        }`} />
+                                    <span className={`font-medium ${meetingType === 'offline' ? 'text-blue-500' : 'text-gray-700'
+                                        }`}>Offline</span>
+                                </div>
+                                {meetingType === 'offline' && (
+                                    <div className="absolute top-2 right-2 w-2 h-2 bg-blue-500 rounded-full" />
+                                )}
                             </button>
                         </div>
                     </div>
