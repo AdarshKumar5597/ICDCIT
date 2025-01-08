@@ -31,9 +31,6 @@ interface Message {
     communities?: typeof recommendedCommunities;
 }
 
-const dummyResponses = [
-    "If you're experiencing stomach pain, it's important to consider a few things. For mild pain, over-the-counter severe, persistent, or accompanied by other symptoms like fever, vomiting.",
-];
 
 const Page = () => {
     const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -48,7 +45,7 @@ const Page = () => {
             scrollElement.scrollTop = scrollElement.scrollHeight;
         }
     }, [messages]);
-    
+
     const simulateAIResponse = async (flaskMessageBody) => {
         setIsTyping(true);
         const response = await axios.post('http://127.0.0.1:5000/question-answer', flaskMessageBody);
