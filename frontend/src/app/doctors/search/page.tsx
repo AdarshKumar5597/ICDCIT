@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { Doctor } from '@/types/types';
@@ -21,6 +21,11 @@ export default function DoctorsPage() {
             setHasMore(false);
         }, 1500);
     };
+
+    useEffect(() => {
+        //fetch doctors from API
+        setDoctors(mockDoctors);
+    }, []);
 
     return (
         <>
@@ -95,7 +100,7 @@ export default function DoctorsPage() {
                         }
                         endMessage={
                             <div className="text-center py-8 text-gray-500 font-medium">
-                                You've seen all available doctors
+                                You&apos;ve seen all available doctors
                             </div>
                         }
                         className="space-y-8"
