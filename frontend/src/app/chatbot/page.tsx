@@ -3,6 +3,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Copy, Check, Share, ArrowUp } from 'lucide-react';
 import toast from 'react-hot-toast';
 import Image from 'next/image';
+import axios from "axios";
 
 const recommendedCommunities = [
     {
@@ -49,10 +50,10 @@ const Page = () => {
     }, [messages]);
 
 
-    const simulateAIResponse = async () => {
+    const simulateAIResponse = async (flaskMessageBody) => {
         setIsTyping(true);
-
-        const dummyResponse = dummyResponses[Math.floor(Math.random() * dummyResponses.length)];
+        const response = await axios.post('http://127.0.0.1:5000/question-answer', flaskMessageBody);
+        const dummyResponse = response.data?.message;
         const typingMessage: Message = {
             id: crypto.randomUUID(),
             text: '',
@@ -114,10 +115,15 @@ const Page = () => {
             sender: 'user'
         };
 
+        const flaskMessageBody = {
+            message: inputMessage,
+            chatBotRoomId: 1
+        }
+
         setMessages(prev => [...prev, { ...newMessage, sender: 'user' as const }]);
         setInputMessage('');
 
-        await simulateAIResponse();
+        await simulateAIResponse(flaskMessageBody);
     };
 
     const handleCopyMessage = (text: string, id: string, communities?: typeof recommendedCommunities) => {
