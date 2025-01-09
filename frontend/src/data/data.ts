@@ -1,4 +1,5 @@
 import { Doctor } from "@/types/types";
+import { CheckCircleIcon, ClockIcon, XCircleIcon } from "lucide-react";
 
 export const communitiesData = [
   {
@@ -391,3 +392,77 @@ export const mockDoctors: Doctor[] = [
     location: "Hyderabad",
   },
 ];
+
+export const stats = {
+  pending: {
+    count: 5,
+    icon: ClockIcon,
+    color: "text-amber-600",
+    bgColor: "bg-amber-50",
+    label: "Awaiting Response",
+  },
+  accepted: {
+    count: 12,
+    icon: CheckCircleIcon,
+    color: "text-emerald-600",
+    bgColor: "bg-emerald-50",
+    label: "Consultations Approved",
+  },
+  rejected: {
+    count: 3,
+    icon: XCircleIcon,
+    color: "text-rose-600",
+    bgColor: "bg-rose-50",
+    label: "Requests Declined",
+  },
+};
+
+export const patientList = {
+  showTo: "doctor",
+  requests: [
+    {
+      id: "1",
+      name: "James Anderson",
+      profileImage: "/images/patient.png",
+      requestDate: "2024-01-19",
+      requestTime: "09:15",
+      description:
+        "Hello sir, I am experiencing severe pain in my lower back for the past 2 weeks.",
+      status: "pending",
+    },
+    {
+      id: "2",
+      name: "Emma Thompson",
+      profileImage: "/images/patient.png",
+      requestDate: "2024-01-18",
+      requestTime: "14:30",
+      description: "Following up on my previous treatment.",
+      status: "accepted",
+    },
+    {
+      id: "3",
+      name: "Michael Brown",
+      profileImage: "/images/patient.png",
+      requestDate: "2024-01-17",
+      requestTime: "11:20",
+      description: "Need urgent consultation regarding chest pain.",
+      status: "rejected",
+    },
+  ],
+};
+
+export const doctorList = {
+  showTo: "patient",
+  requests: [
+    {
+      id: "2",
+      name: "Dr. Sarah Wilson",
+      profileImage: "/images/doctors/doctor1.png",
+      requestDate: "2024-01-20",
+      requestTime: "14:30",
+      description:
+        "Hello sir, I am experiencing severe pain in my lower back for the past 2 weeks. I would like to consult with you regarding this issue.",
+      status: "pending",
+    },
+  ],
+};
