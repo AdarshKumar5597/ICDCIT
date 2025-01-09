@@ -1,7 +1,8 @@
 "use client";
+
 import Image from 'next/image';
 import React, { useState, useEffect } from 'react';
-import { Menu, X } from 'lucide-react';
+import { Menu, X, ChevronDown } from 'lucide-react';
 import Link from 'next/link';
 import { useHealthcareStore } from '@/zustand/useHealthcareStore';
 
@@ -52,10 +53,24 @@ const Navbar = () => {
             </button>
 
             <div className="hidden md:flex items-center gap-4 lg:gap-6">
-              <Link href="/doctors/search" className="text-sm lg:text-base hover:text-blue-600 transition-colors">Doctor Consultations</Link>
-              <Link href="/chatbot" className="text-sm lg:text-base hover:text-blue-600 transition-colors">Health Assistant</Link>
-              <Link href="/community" className="text-sm lg:text-base hover:text-blue-600 transition-colors">Community</Link>
-              <Link href="/feed" className="text-sm lg:text-base hover:text-blue-600 transition-colors">Explore</Link>
+              <Link href="/doctors/search" className="text-sm lg:text-base hover:text-blue-600 transition-colors">
+                Doctor Consultations
+              </Link>
+              <Link href="/chatbot" className="text-sm lg:text-base hover:text-blue-600 transition-colors">
+                Health Assistant
+              </Link>
+
+              <div className="relative group">
+                <button className="flex items-center gap-1 py-2 group hover:text-blue-600 transition-colors">
+                  <span>Your Activity</span>
+                  <ChevronDown size={16} />
+                </button>
+                <div className="absolute top-full -left-4 w-48 bg-white shadow-lg rounded-lg py-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300">
+                  <Link href="/community" className="block px-4 py-2 hover:bg-blue-50 hover:text-blue-600 transition-colors">Community</Link>
+                  <Link href="/requests" className="block px-4 py-2 hover:bg-blue-50 hover:text-blue-600 transition-colors">Your Requests</Link>
+                  <Link href="/feed" className="block px-4 py-2 hover:bg-blue-50 hover:text-blue-600 transition-colors">Explore Feed</Link>
+                </div>
+              </div>
             </div>
 
             <div className="hidden md:flex items-center gap-4">
@@ -85,17 +100,18 @@ const Navbar = () => {
         <div className="fixed inset-0 bg-black/30 z-[90]" onClick={() => setIsMenuOpen(false)} />
       )}
 
-      {/* Mobile menu */}
       <div
         className={`fixed inset-0 bg-white/95 backdrop-blur-sm transform z-[95] ${isMenuOpen ? 'translate-x-0' : 'translate-x-full'} transition-transform duration-300 ease-in-out`}
       >
         <div className="flex flex-col h-full px-4 pt-24 pb-6">
           <div className="flex flex-col gap-4">
-            <Link href="/doctors/search" className="text-lg hover:text-blue-600 transition-colors py-2">Doctor Consultations</Link>
-            <Link href="/chatbot" className="text-lg hover:text-blue-600 transition-colors py-2">Health Assistant</Link>
-            <Link href="/community" className="text-lg hover:text-blue-600 transition-colors py-2">Community</Link>
-            <Link href="/feed" className="text-lg hover:text-blue-600 transition-colors py-2">Explore</Link>
+            <Link onClick={() => setIsMenuOpen(false)} href="/doctors/search" className="text-lg hover:text-blue-600 transition-colors py-2">Doctor Consultations</Link>
+            <Link onClick={() => setIsMenuOpen(false)} href="/chatbot" className="text-lg hover:text-blue-600 transition-colors py-2">Health Assistant</Link>
+            <Link onClick={() => setIsMenuOpen(false)} href="/community" className="block text-lg hover:text-blue-600 transition-colors py-2">Community</Link>
+            <Link onClick={() => setIsMenuOpen(false)} href="/requests" className="block text-lg hover:text-blue-600 transition-colors py-2">Your Requests</Link>
+            <Link onClick={() => setIsMenuOpen(false)} href="/feed" className="block text-lg hover:text-blue-600 transition-colors py-2">Explore Feed</Link>
           </div>
+
           <div className="mt-auto space-y-4">
             {isLoggedIn ? (
               <button
