@@ -33,9 +33,9 @@ const Navbar = () => {
               <Image
                 src="/icons/logo.png"
                 alt="ICDCIT logo"
-                width={48}
-                height={48}
-                className="object-contain"
+                width={100}
+                height={100}
+                className="object-contain w-14 h-14"
                 loading='lazy'
               />
               <h1 className="text-2xl font-bold text-blue-600">
