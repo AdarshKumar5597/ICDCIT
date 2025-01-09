@@ -82,7 +82,6 @@ def get_answer_from_model(question):
         response = modelChain.invoke(question)
         print("response", response)
         answer = response["answer"]
-        return f"{answer}"
-# Dummy ML model function
+        return f"{answer}".split(',')
 def generate_title():
     return "Chat Room Title"

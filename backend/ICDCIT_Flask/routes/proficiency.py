@@ -11,4 +11,4 @@ def proficiency():
         return jsonify({'error': 'message are required'}), 400
 
     answer = get_answer_from_model(message)
-    return jsonify({'message': answer})
+    return jsonify({'proficiencies': answer})

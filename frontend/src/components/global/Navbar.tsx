@@ -5,6 +5,7 @@ import React, { useState, useEffect } from 'react';
 import { Menu, X, ChevronDown } from 'lucide-react';
 import Link from 'next/link';
 import { useHealthcareStore } from '@/zustand/useHealthcareStore';
+import {useRouter} from "next/navigation";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -12,7 +13,7 @@ const Navbar = () => {
 
   const isLoggedIn = useHealthcareStore(state => state.loggedIn);
   const setIsLoggedIn = useHealthcareStore(state => state.setLoggedIn);
-
+  const router = useRouter();
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 10);
@@ -22,6 +23,7 @@ const Navbar = () => {
   }, []);
 
   const handleLogout = () => {
+    router.replace('/');
     setIsLoggedIn(false);
   };
 

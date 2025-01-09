@@ -6,6 +6,7 @@ import { Eye, EyeOff } from 'lucide-react';
 import toast from 'react-hot-toast';
 // import { useRouter } from 'next/navigation';
 import { useHealthcareStore } from '@/zustand/useHealthcareStore';
+import {useRouter} from "next/navigation";
 
 const Page = () => {
     const [showPassword, setShowPassword] = useState(false);
@@ -14,7 +15,7 @@ const Page = () => {
     const [loading, setLoading] = useState(false);
     const setAuthData = useHealthcareStore(state => state.setAuthData);
     const setLoggedIn = useHealthcareStore(state => state.setLoggedIn);
-
+    const router = useRouter();
     // const router = useRouter();
 
     const handleSignIn = async (e: React.FormEvent) => {
@@ -45,6 +46,7 @@ const Page = () => {
                 setLoggedIn(true);
                 toast.success('Logged in successfully!');
                 console.log("Logged in successfully!");
+                await router.push('/doctors/search');
             } else {
                 toast.error(data.message || 'Login failed. Please try again!');
             }
