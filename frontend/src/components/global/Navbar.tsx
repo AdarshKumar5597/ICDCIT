@@ -52,7 +52,7 @@ const Navbar = () => {
             </button>
 
             <div className="hidden md:flex items-center gap-4 lg:gap-6">
-              <Link href="/doctor/search" className="text-sm lg:text-base hover:text-blue-600 transition-colors">Doctor Consultations</Link>
+              <Link href="/doctors/search" className="text-sm lg:text-base hover:text-blue-600 transition-colors">Doctor Consultations</Link>
               <Link href="/chatbot" className="text-sm lg:text-base hover:text-blue-600 transition-colors">Health Assistant</Link>
               <Link href="/community" className="text-sm lg:text-base hover:text-blue-600 transition-colors">Community</Link>
               <Link href="/feed" className="text-sm lg:text-base hover:text-blue-600 transition-colors">Explore</Link>
@@ -91,7 +91,7 @@ const Navbar = () => {
       >
         <div className="flex flex-col h-full px-4 pt-24 pb-6">
           <div className="flex flex-col gap-4">
-            <Link href="/doctor/search" className="text-lg hover:text-blue-600 transition-colors py-2">Doctor Consultations</Link>
+            <Link href="/doctors/search" className="text-lg hover:text-blue-600 transition-colors py-2">Doctor Consultations</Link>
             <Link href="/chatbot" className="text-lg hover:text-blue-600 transition-colors py-2">Health Assistant</Link>
             <Link href="/community" className="text-lg hover:text-blue-600 transition-colors py-2">Community</Link>
             <Link href="/feed" className="text-lg hover:text-blue-600 transition-colors py-2">Explore</Link>
