@@ -3,7 +3,7 @@ from flask_socketio import SocketIO, join_room, leave_room, emit
 import uuid
 from __main__ import app, socketio
 
-from app import process_command
+# from app import process_command
 from utils.question_answer_model import generate_title
 
 rooms = {}
@@ -29,12 +29,19 @@ def get_rooms():
 def handle_join(data):
     username = data['username']
     room_id = data['room_id']
-    if room_id in rooms:
-        join_room(room_id)
-        rooms[room_id]['users'].append(username)
-        emit('user_joined', {'username': username, 'room_id': room_id}, room_id)
-    else:
-        emit('error', {'message': 'Room does not exist'})
+
+    if room_id not in rooms:
+        # Create a new room if it does not exist
+        title = generate_title()  # Call your ML model here to generate a title
+        rooms[room_id] = {
+            'title': title,
+            'users': []
+        }
+        emit('room_created', {'room_id': room_id, 'title': title})
+
+    join_room(room_id)
+    rooms[room_id]['users'].append(username)
+    emit('user_joined', {'username': username, 'room_id': room_id}, to=room_id)
 
 
 @socketio.on('leave')
@@ -44,7 +51,7 @@ def handle_leave(data):
     if room_id in rooms:
         leave_room(room_id)
         rooms[room_id]['users'].remove(username)
-        emit('user_left', {'username': username, 'room_id': room_id}, room_id)
+        emit('user_left', {'username': username, 'room_id': room_id}, to=room_id)
     else:
         emit('error', {'message': 'Room does not exist'})
 
@@ -57,11 +64,11 @@ def handle_message(data):
 
     # Check if it's a command
     if message.startswith('/bot'):
-        response = process_command(message)
-        emit('bot_response', {'username': 'Bot', 'message': response}, room_id)
+        response = "COMMAND"
+        emit('bot_response', {'username': 'Bot', 'message': response}, to=room_id)
     else:
         # Broadcast message to the room
-        emit('message', {'username': username, 'message': message}, room_id)
+        emit('message', {'username': username, 'message': message}, to=room_id)
 
     # Save message to in-memory store (replace with database integration)
     if room_id not in chats:
