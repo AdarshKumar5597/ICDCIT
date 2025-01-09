@@ -6,7 +6,7 @@ from urllib.parse import urlparse
 from utils.environment_variables import DATABASE_URL
 from utils.question_answer_model import generate_title
 
-url = urlparse(DATABASE_URL)
+url = urlparse("postgresql://postgres.bjwkobwaiuaqnxddotvd:GNpby89hMupnge3M@aws-0-ap-south-1.pooler.supabase.com:6543/postgres")
 
 def update_chatbot_room(chatBotRoomId, message, messageType):
     conn = psycopg2.connect(
@@ -70,3 +70,19 @@ def update_room_title(chatBotRoomId):
     conn.commit()
     cursor.close()
     conn.close()
+
+def get_all_proficiencies():
+    conn = psycopg2.connect(
+        dbname=url.path[1:],
+        user=url.username,
+        password=url.password,
+        host=url.hostname,
+        port=url.port
+    )
+    cursor = conn.cursor(cursor_factory=RealDictCursor)
+    select_query = "SELECT DISTINCT proficiency_name FROM proficiency"
+    cursor.execute(select_query)
+    proficiencies = cursor.fetchall()
+    cursor.close()
+    conn.close()
+    return [proficiency['proficiency_name'] for proficiency in proficiencies]

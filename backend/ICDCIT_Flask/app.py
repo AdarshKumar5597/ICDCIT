@@ -9,6 +9,7 @@ CORS(app)
 import routes.chat
 import routes.question
 import routes.user
+import routes.proficiency
 
 if __name__ == '__main__':
     socketio.run(app, debug=True, allow_unsafe_werkzeug=True)
