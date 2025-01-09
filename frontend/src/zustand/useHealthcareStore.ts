@@ -9,7 +9,7 @@ interface HealthcareStoreInterface {
 }
 
 export const useHealthcareStore = create<HealthcareStoreInterface>((set) => ({
-  authData: { token: null, userId: null, role: null },
+  authData: { token: null, userId: null, role: null , userName: null},
   setAuthData: (data) => set({ authData: data }),
   loggedIn: false,
   setLoggedIn: (loggedIn) => set({ loggedIn }),

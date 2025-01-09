@@ -20,6 +20,7 @@ export interface AuthData {
   token: string | null;
   userId: number | null;
   role: string | null;
+  userName: string | null;
 }
 
 export interface Community {

@@ -41,7 +41,7 @@ const Page = () => {
             const data = await response.json();
 
             if (data.success) {
-                setAuthData({ token: data.token, userId: data.userId, role: data.role });
+                setAuthData({ token: data.token, userId: data.userId, role: data.role, userName: data.userName });
                 setLoggedIn(true);
                 toast.success('Logged in successfully!');
                 console.log("Logged in successfully!");
