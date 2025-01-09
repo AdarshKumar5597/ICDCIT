@@ -77,6 +77,7 @@ public class AuthService {
                             .message("Login successful via token")
                             .userId(user.get().getUserId())
                             .role(user.get().getRole().name())
+                            .userName(user.get().getUserName())
                             .success(true)
                             .build(), HttpStatus.OK);
                 }

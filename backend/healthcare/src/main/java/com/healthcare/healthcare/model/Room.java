@@ -34,6 +34,9 @@ public class Room {
     @Column(name = "proficiencies", columnDefinition = "TEXT[]")
     private List<String> proficiencies;
 
+    @Column(name = "member_list", columnDefinition = "INTEGER[]")
+    private List<Long> memberList;
+
     @PrePersist
     public void onCreate() {
         this.createdAt = new Date();
