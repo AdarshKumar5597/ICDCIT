@@ -1,7 +1,7 @@
 package com.healthcare.healthcare.controller;
 
 import com.healthcare.healthcare.dto.request.RequestListProficienciesDto;
-import com.healthcare.healthcare.dto.response.DoctorListResponseDto;
+import com.healthcare.healthcare.dto.response.DoctorResponseDto;
 import com.healthcare.healthcare.dto.response.MeetingContractResponseDto;
 import com.healthcare.healthcare.dto.response.RequestListResponseDto;
 import com.healthcare.healthcare.dto.response.RequestResponseDto;
@@ -10,6 +10,9 @@ import com.healthcare.healthcare.service.appointment.AppointmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 @RequestMapping("/appointments/")
@@ -46,7 +49,7 @@ public class AppointmentController {
         }
     }
 
-    @GetMapping("/requests/{doctorId}")
+    @GetMapping("/doctor/requests/{doctorId}")
     public ResponseEntity<RequestListResponseDto> getRequestsByDoctorId(@PathVariable Long doctorId) {
         try {
             return appointmentService.getRequestsByDoctorId(doctorId);
@@ -61,17 +64,12 @@ public class AppointmentController {
     }
 
     @PostMapping("/doctors-by-proficiencies")
-    public ResponseEntity<DoctorListResponseDto> getDoctorsByProficiencies(
+    public ResponseEntity<List<DoctorResponseDto>> getDoctorsByProficiencies(
             @RequestBody RequestListProficienciesDto requestListProficienciesDto) {
         try {
             return appointmentService.getDoctorsByProficiencies(requestListProficienciesDto.getProficiencies());
         } catch (Exception e) {
-            return ResponseEntity.internalServerError().body(
-                    DoctorListResponseDto.builder()
-                            .success(false)
-                            .message("Failed to fetch doctors by proficiencies: " + e.getMessage())
-                            .build()
-            );
+            return ResponseEntity.internalServerError().body(new ArrayList<>());
         }
     }
 
@@ -120,7 +118,7 @@ public class AppointmentController {
         }
     }
 
-    @GetMapping("/requests/{userId}")
+    @GetMapping("/user/requests/{patientId}")
     public ResponseEntity<RequestListResponseDto> getRequestsByPatientId(@PathVariable Long patientId) {
         try {
             return appointmentService.getRequestsByPatientId(patientId);
@@ -134,10 +132,10 @@ public class AppointmentController {
         }
     }
 
-    @PostMapping("/reject-request")
-    public ResponseEntity<RequestResponseDto> rejectRequest(@RequestBody Request request) {
+    @PostMapping("/reject-request/{requestId}")
+    public ResponseEntity<RequestResponseDto> rejectRequest(@PathVariable Long requestId) {
         try {
-            return appointmentService.rejectRequest(request);
+            return appointmentService.rejectRequest(requestId);
         } catch (Exception e) {
             return ResponseEntity.internalServerError().body(
                     RequestResponseDto.builder()

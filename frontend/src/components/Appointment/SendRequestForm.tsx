@@ -3,8 +3,9 @@ import { X, Video, Users } from 'lucide-react'
 import { motion } from 'framer-motion'
 import { useHealthcareStore } from '@/zustand/useHealthcareStore'
 import toast from 'react-hot-toast'
+import axios from 'axios'
 
-const SendRequestForm = ({ onClose }: { onClose: () => void }) => {
+const SendRequestForm = ({ onClose, doctorId }: { onClose: () => void, doctorId: number }) => {
     const [meetingType, setMeetingType] = useState<'online' | 'offline'>('online')
     const [problem, setProblem] = useState<string>('')
 
@@ -14,29 +15,25 @@ const SendRequestForm = ({ onClose }: { onClose: () => void }) => {
         console.log({ meetingType, problem })
         const requestApiURL = "http://localhost:8080/appointments/create-request";
 
-        const requestOptions = {
-            method: 'POST',
+        const response = await axios.post(requestApiURL, {
+            patientID: authData.userId,
+            doctorID: doctorId,
+            requirements: problem
+        }, {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${authData.token}`
-            },
-            body: JSON.stringify({
-                patientId: authData.userId,
-                doctorId: 1,
-                requirements: problem
-            })
+            }
         }
+        )
 
-        const response = await fetch(requestApiURL, requestOptions)
-        const data = await response.json()
-
-        if (response.status !== 200) {
+        if (!response.data.success) {
             toast.error("Error sending request");
             return;
         }
 
         toast.success("Request sent successfully");
-        console.log(data)
+        console.log(response.data);
         onClose()
     }
 

@@ -25,7 +25,7 @@ public class Request {
     @Column(nullable = false, name = "doctor_id")
     private Long doctorID;
 
-    @Column(nullable = false, name = "proficiency_id")
+    @Column(name = "proficiency_id")
     private Long proficiencyID;
 
     @Column(nullable = false, name = "requirements")
