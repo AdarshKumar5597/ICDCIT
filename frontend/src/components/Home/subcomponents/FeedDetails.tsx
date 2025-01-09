@@ -1,5 +1,6 @@
 import React from 'react'
 import { ArrowRight, BookOpen, Bell, Bookmark } from 'lucide-react';
+import Link from 'next/link';
 
 const FeedDetails = () => {
     return (
@@ -46,10 +47,10 @@ const FeedDetails = () => {
                 </div>
             </div>
 
-            <button className="inline-flex items-center px-6 py-3 bg-blue-500 text-white rounded-full hover:bg-blue-600 transition-colors font-medium gap-2">
+            <Link href={"/feed"} className="inline-flex items-center px-6 py-3 bg-blue-500 text-white rounded-full hover:bg-blue-600 transition-colors font-medium gap-2">
                 Explore Feed
                 <ArrowRight className="w-5 h-5" />
-            </button>
+            </Link>
         </div>
     )
 }

@@ -13,7 +13,6 @@ export default function DoctorsPage() {
     const [searchQuery, setSearchQuery] = useState('');
     const [doctors, setDoctors] = useState<Doctor[]>(mockDoctors);
     const [hasMore, setHasMore] = useState(true);
-    const [selectedSpecialty, setSelectedSpecialty] = useState('all');
     const [openDoctorForm, setOpenDoctorForm] = useState<boolean>(false);
 
     const fetchMoreDoctors = () => {
@@ -50,32 +49,12 @@ export default function DoctorsPage() {
                             <h1 className="text-3xl lg:text-4xl font-bold text-blue-950">
                                 Find Your Doctor
                             </h1>
-                            <div className="flex flex-wrap gap-4">
-                                <select
-                                    value={selectedSpecialty}
-                                    onChange={(e) => setSelectedSpecialty(e.target.value)}
-                                    className="px-4 py-2 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white"
-                                >
-                                    <option value="all">All Specialties</option>
-                                    <option value="cardiology">Cardiology</option>
-                                    <option value="neurology">Neurology</option>
-                                    <option value="orthopedics">Orthopedics</option>
-                                </select>
-                                <select
-                                    className="px-4 py-2 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white"
-                                >
-                                    <option>Sort by: Relevance</option>
-                                    <option>Price: Low to High</option>
-                                    <option>Price: High to Low</option>
-                                    <option>Rating</option>
-                                </select>
-                            </div>
                         </div>
 
                         <div className="relative">
                             <input
                                 type="text"
-                                placeholder="Search doctors by name, specialty, or condition..."
+                                placeholder="Describe your healthcare condition..."
                                 className="w-full px-6 py-4 rounded-full border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-sm pl-12"
                                 value={searchQuery}
                                 onChange={(e) => setSearchQuery(e.target.value)}
@@ -108,15 +87,15 @@ export default function DoctorsPage() {
                         {doctors.map((doctor) => (
                             <div key={doctor.id} className="bg-white rounded-2xl shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden border border-gray-100">
                                 <div className="p-6 sm:p-8">
-                                    <div className="flex flex-col lg:flex-row gap-8">
-                                        <div className="w-full lg:w-56 h-56 lg:h-64 shrink-0 relative">
-                                            <div className="aspect-square relative w-full h-full rounded-xl overflow-hidden">
+                                    <div className="flex flex-col md:flex-row gap-8">
+                                        <div className="w-full md:w-48 lg:w-56 mx-auto md:mx-0">
+                                            <div className="aspect-square relative rounded-xl overflow-hidden max-w-[224px] md:max-w-none">
                                                 <Image
                                                     src={doctor.profilePhoto}
                                                     alt={doctor.name}
-                                                    fill
-                                                    className="object-cover"
-                                                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                                                    width={1000}
+                                                    height={1000}
+                                                    className="object-cover w-60 h-60"
                                                 />
                                             </div>
                                         </div>
@@ -161,11 +140,8 @@ export default function DoctorsPage() {
                                             </div>
 
                                             <div className="flex flex-col sm:flex-row gap-4 mt-6">
-                                                <button onClick={() => setOpenDoctorForm(true)} className="flex-1 bg-blue-500 text-white px-8 py-3 rounded-full hover:bg-blue-600 transition-all duration-300 font-medium">
+                                                <button onClick={() => setOpenDoctorForm(true)} className="bg-blue-500 text-white px-8 py-3 rounded-full hover:bg-blue-600 transition-all duration-300 font-medium">
                                                     Book Appointment
-                                                </button>
-                                                <button className="flex-1 border-2 border-blue-500 text-blue-500 px-8 py-3 rounded-full hover:bg-blue-50 transition-all duration-300 font-medium">
-                                                    View Full Profile
                                                 </button>
                                             </div>
                                         </div>

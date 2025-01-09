@@ -59,6 +59,56 @@ const Feed = () => {
         }
     };
 
+    const dataForKnowledgeGraph = (currentNews: typeof news) => {
+        let result = "";
+        let counter = 1;
+
+        if (currentNews.topHeadlines?.length > 0) {
+            currentNews.topHeadlines.forEach(article => {
+                result += `${counter}. ${article.title}\n${article.description}\n\n`;
+                counter++;
+            });
+        }
+
+        if (currentNews.featuredNews?.length > 0) {
+            currentNews.featuredNews.forEach(article => {
+                result += `${counter}. ${article.title}\n${article.description}\n\n`;
+                counter++;
+            });
+        }
+
+        if (currentNews.latestUpdates?.length > 0) {
+            currentNews.latestUpdates.forEach(article => {
+                result += `${counter}. ${article.title}\n${article.description}\n\n`;
+                counter++;
+            });
+        }
+
+        if (currentNews.trendingTopics?.length > 0) {
+            currentNews.trendingTopics.forEach(article => {
+                result += `${counter}. ${article.title}\n${article.description}\n\n`;
+                counter++;
+            });
+        }
+
+        if (currentNews.localNews?.length > 0) {
+            currentNews.localNews.forEach(article => {
+                result += `${counter}. ${article.title}\n${article.description}\n\n`;
+                counter++;
+            });
+        }
+
+        if (currentNews.research?.length > 0) {
+            currentNews.research.forEach(article => {
+                result += `${counter}. ${article.title}\n${article.description}\n\n`;
+                counter++;
+            });
+        }
+
+        console.log("Knowledge Graph Data: ", result);
+        return result.trim();
+    };
+
     useEffect(() => {
         const fetchAllNews = async () => {
             setIsLoading(true);
@@ -84,24 +134,25 @@ const Feed = () => {
                 };
 
                 setNews(newsData);
+                // Process the knowledge graph data after setting the news
+                const graphData = dataForKnowledgeGraph(newsData);
+                console.log("Initial Knowledge Graph Data:", graphData);
             } catch (err) {
                 setError('Failed to fetch news. Please try again later.' + err);
             } finally {
                 setIsLoading(false);
             }
         };
-
         fetchAllNews();
     }, []);
-    console.log("All news: ", news);
 
-    if (error) {
-        return (
-            <div className="mt-16 min-h-screen flex items-center justify-center">
-                <div className="text-center text-red-600">{error}</div>
-            </div>
-        );
-    }
+    // Add a useEffect to watch for news changes
+    useEffect(() => {
+        if (!isLoading && Object.values(news).some(arr => arr.length > 0)) {
+            const graphData = dataForKnowledgeGraph(news);
+            console.log("Updated Knowledge Graph Data:", graphData);
+        }
+    }, [news, isLoading]);
 
     return (
         <div className="mt-16 bg-gray-50 min-h-screen">

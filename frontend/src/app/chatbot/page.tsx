@@ -168,7 +168,7 @@ const Page = () => {
                     Get reliable medical information and guidance from our advanced healthcare AI system. Available 24/7 to assist with your health-related queries.
                 </p>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 text-sm px-4">
+                <div className="hidden sm:grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 text-sm px-4">
                     {[
                         "Symptom Assessment",
                         "Medical Information",
@@ -218,21 +218,7 @@ const Page = () => {
     );
 
     return (
-        <div className="flex flex-col h-screen bg-gray-50">
-            <div className="sticky top-0 z-10 p-6 border-b bg-white backdrop-blur-lg bg-opacity-80">
-                <div className="max-w-4xl mx-auto flex items-center justify-between">
-                    <div>
-                        <span className="text-2xl font-bold bg-gradient-to-r from-blue-500 to-blue-600 bg-clip-text text-transparent">Pagal GPT</span>
-                        <span className="text-sm text-gray-500 ml-4 italic">our most duffer LLM model ever</span>
-                    </div>
-                    <div className="flex gap-2">
-                        <button className="p-2 rounded-full hover:bg-gray-100 transition-colors">
-                            <Share className="h-5 w-5 text-gray-600" />
-                        </button>
-                    </div>
-                </div>
-            </div>
-
+        <div className="flex flex-col h-screen mt-16 bg-gray-50">
             {messages.length === 0 ? (
                 <EmptyChat />
             ) : (

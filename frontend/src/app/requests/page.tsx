@@ -3,24 +3,58 @@
 import Image from 'next/image';
 import { useState, useEffect } from 'react';
 import { CheckIcon, XMarkIcon, ClockIcon, CheckCircleIcon, XCircleIcon } from '@heroicons/react/24/solid';
-import { Icon } from 'lucide-react';
-import { doctorList, patientList, stats } from '@/data/data';
+import { AlertCircle } from 'lucide-react';
 import { AnimatePresence, motion } from 'framer-motion';
 import DoctorContractForm from '@/components/Requests/DoctorContractForm';
 import { useHealthcareStore } from '@/zustand/useHealthcareStore';
+import axios from 'axios';
 
 type RequestStatus = 'pending' | 'accepted' | 'rejected';
 
-interface RequestProps {
+interface Request {
     id: string;
     name: string;
     profileImage: string;
     requestDate: string;
     requestTime: string;
     description: string;
-    status?: RequestStatus;
+    status: RequestStatus;
     specialty?: string;
 }
+
+// Mock data for when backend is unavailable
+const mockRequests: Request[] = [
+    {
+        id: '1',
+        name: 'John Doe',
+        profileImage: '/api/placeholder/100/100',
+        requestDate: '2024-01-09',
+        requestTime: '10:30 AM',
+        description: 'General checkup appointment request',
+        status: 'pending',
+        specialty: 'General Medicine'
+    },
+    {
+        id: '2',
+        name: 'Jane Smith',
+        profileImage: '/api/placeholder/100/100',
+        requestDate: '2024-01-09',
+        requestTime: '2:00 PM',
+        description: 'Follow-up consultation',
+        status: 'accepted',
+        specialty: 'Cardiology'
+    },
+    {
+        id: '3',
+        name: 'Mike Johnson',
+        profileImage: '/api/placeholder/100/100',
+        requestDate: '2024-01-09',
+        requestTime: '4:30 PM',
+        description: 'Emergency consultation request',
+        status: 'rejected',
+        specialty: 'Orthopedics'
+    }
+];
 
 const StatusBadge = ({ status }: { status: RequestStatus }) => {
     const statusConfig = {
@@ -57,15 +91,16 @@ const StatusBadge = ({ status }: { status: RequestStatus }) => {
 
 const RequestCard = ({
     request,
-    isPatientRequest,
-    setOpenDoctorContractForm
+    onAccept,
+    onDecline
 }: {
-    request: RequestProps;
-    isPatientRequest: boolean;
-    setOpenDoctorContractForm: (value: boolean) => void;
+    request: Request;
+    onAccept: (id: string) => void;
+    onDecline: (id: string) => void;
 }) => {
-    const [status, setStatus] = useState<RequestStatus>(request.status || "pending");
     const [isMobile, setIsMobile] = useState(false);
+    const { authData } = useHealthcareStore();
+    const isDoctor = authData.role === 'doctor';
 
     useEffect(() => {
         const checkMobile = () => setIsMobile(window.innerWidth < 640);
@@ -73,8 +108,6 @@ const RequestCard = ({
         window.addEventListener('resize', checkMobile);
         return () => window.removeEventListener('resize', checkMobile);
     }, []);
-
-    const handleDecline = () => setStatus("rejected");
 
     return (
         <div className="bg-white p-3 sm:p-4 md:p-6 rounded-lg border border-gray-200 hover:border-blue-200 transition-all duration-200 shadow-sm hover:shadow-md">
@@ -109,29 +142,25 @@ const RequestCard = ({
                 </div>
 
                 <div className={`flex ${isMobile ? 'flex-row justify-end' : 'flex-col items-end'} gap-2 w-full sm:w-auto mt-2 sm:mt-0`}>
-                    {isPatientRequest ? (
-                        status === "pending" ? (
-                            <div className="flex items-center gap-2 w-full sm:w-auto justify-end">
-                                <button
-                                    onClick={() => setOpenDoctorContractForm(true)}
-                                    className="flex-1 sm:flex-none px-2 sm:px-3 py-1.5 rounded-full bg-green-50 hover:bg-green-100 text-green-600 text-xs sm:text-sm font-medium transition-colors flex items-center justify-center gap-1"
-                                >
-                                    <CheckIcon className="w-3 h-3 sm:w-4 sm:h-4" />
-                                    Accept
-                                </button>
-                                <button
-                                    onClick={handleDecline}
-                                    className="flex-1 sm:flex-none px-2 sm:px-3 py-1.5 rounded-full bg-red-50 hover:bg-red-100 text-red-600 text-xs sm:text-sm font-medium transition-colors flex items-center justify-center gap-1"
-                                >
-                                    <XMarkIcon className="w-3 h-3 sm:w-4 sm:h-4" />
-                                    Decline
-                                </button>
-                            </div>
-                        ) : (
-                            <StatusBadge status={status} />
-                        )
+                    {isDoctor && request.status === "pending" ? (
+                        <div className="flex items-center gap-2 w-full sm:w-auto justify-end">
+                            <button
+                                onClick={() => onAccept(request.id)}
+                                className="flex-1 sm:flex-none px-2 sm:px-3 py-1.5 rounded-full bg-green-50 hover:bg-green-100 text-green-600 text-xs sm:text-sm font-medium transition-colors flex items-center justify-center gap-1"
+                            >
+                                <CheckIcon className="w-3 h-3 sm:w-4 sm:h-4" />
+                                Accept
+                            </button>
+                            <button
+                                onClick={() => onDecline(request.id)}
+                                className="flex-1 sm:flex-none px-2 sm:px-3 py-1.5 rounded-full bg-red-50 hover:bg-red-100 text-red-600 text-xs sm:text-sm font-medium transition-colors flex items-center justify-center gap-1"
+                            >
+                                <XMarkIcon className="w-3 h-3 sm:w-4 sm:h-4" />
+                                Decline
+                            </button>
+                        </div>
                     ) : (
-                        <StatusBadge status={status} />
+                        <StatusBadge status={request.status} />
                     )}
                 </div>
             </div>
@@ -141,17 +170,103 @@ const RequestCard = ({
 
 const RequestsPage = () => {
     const [activeTab, setActiveTab] = useState<RequestStatus>('pending');
+    const [requests, setRequests] = useState<Request[]>(mockRequests); // Initialize with mock data
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState<string | null>(null);
     const [openDoctorContractForm, setOpenDoctorContractForm] = useState(false);
-    const authData = useHealthcareStore(state => state.authData);
+    const [selectedRequestId, setSelectedRequestId] = useState<string | null>(null);
+    const { authData } = useHealthcareStore();
 
-    const filteredRequests = (list: typeof patientList | typeof doctorList) => {
-        return list.requests.filter(request => request.status === activeTab);
+    const fetchRequests = async () => {
+        setLoading(true);
+        setError(null);
+
+        try {
+            const baseUrl = 'http://localhost:8080/appointments';
+            const url = authData.role === 'doctor'
+                ? `${baseUrl}/doctor/requests/${authData.doctorId}`
+                : `${baseUrl}/user/requests/${authData.userId}`;
+
+            const response = await axios.get<Request[]>(url);
+            setRequests(response.data);
+        } catch (err) {
+            setError('Failed to fetch requests');
+            // Keep using mock data when fetch fails
+            setRequests(mockRequests);
+        } finally {
+            setLoading(false);
+        }
     };
+
+    useEffect(() => {
+        fetchRequests();
+    }, [authData]);
+
+    const handleAccept = async (requestId: string) => {
+        try {
+            await axios.post(`http://localhost:8080/appointments/accept/${requestId}`);
+            setSelectedRequestId(requestId);
+            setOpenDoctorContractForm(true);
+            await fetchRequests();
+        } catch (err) {
+            setError('Failed to accept request');
+            // Update mock data to simulate acceptance
+            setRequests(requests.map(req =>
+                req.id === requestId ? { ...req, status: 'accepted' } : req
+            ));
+        }
+    };
+
+    const handleDecline = async (requestId: string) => {
+        try {
+            // await axios.post(`http://localhost:8080/appointments/decline/${requestId}`);
+            await fetchRequests();
+        } catch (err) {
+            setError('Failed to decline request');
+            setRequests(requests.map(req =>
+                req.id === requestId ? { ...req, status: 'rejected' } : req
+            ));
+        }
+    };
+
+    const filteredRequests = requests.filter(request => request.status === activeTab);
+
+    const stats = {
+        pending: {
+            label: 'Pending Requests',
+            count: requests.filter(r => r.status === 'pending').length,
+            icon: ClockIcon,
+            color: 'text-yellow-500',
+            bgColor: 'bg-yellow-50',
+        },
+        accepted: {
+            label: 'Accepted Requests',
+            count: requests.filter(r => r.status === 'accepted').length,
+            icon: CheckCircleIcon,
+            color: 'text-green-500',
+            bgColor: 'bg-green-50',
+        },
+        rejected: {
+            label: 'Rejected Requests',
+            count: requests.filter(r => r.status === 'rejected').length,
+            icon: XCircleIcon,
+            color: 'text-red-500',
+            bgColor: 'bg-red-50',
+        },
+    };
+
+    if (loading) {
+        return (
+            <div className="max-w-6xl min-h-screen mt-16 mx-auto px-4 py-8 flex items-center justify-center">
+                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500"></div>
+            </div>
+        );
+    }
 
     return (
         <>
             <AnimatePresence>
-                {openDoctorContractForm && (
+                {openDoctorContractForm && selectedRequestId && (
                     <motion.div
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
@@ -159,11 +274,24 @@ const RequestsPage = () => {
                         transition={{ duration: 0.2 }}
                         className="fixed inset-0 bg-black/20 z-50 flex items-center justify-center p-4"
                     >
-                        <DoctorContractForm onClose={() => setOpenDoctorContractForm(false)} />
+                        <DoctorContractForm
+                            onClose={() => {
+                                setOpenDoctorContractForm(false);
+                                setSelectedRequestId(null);
+                            }}
+                        // requestId={selectedRequestId}
+                        />
                     </motion.div>
                 )}
             </AnimatePresence>
             <div className="max-w-6xl min-h-screen mt-16 mx-auto px-3 sm:px-4 py-4 sm:py-8">
+                {error && (
+                    <div className="mb-4 p-4 bg-red-50 border border-red-200 rounded-lg flex items-center gap-2 text-red-700">
+                        <AlertCircle className="w-5 h-5" />
+                        <span>{error}</span>
+                    </div>
+                )}
+
                 <div className="mb-6 sm:mb-8">
                     <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-1 sm:mb-2">Consultation Requests</h1>
                     <p className="text-sm sm:text-base text-gray-600">Track and manage your medical consultation requests</p>
@@ -176,7 +304,7 @@ const RequestsPage = () => {
                             <div key={key}
                                 onClick={() => setActiveTab(key as RequestStatus)}
                                 className={`p-6 rounded-xl border cursor-pointer transition-all duration-200
-                      ${activeTab === key ? 'border-blue-500 shadow-md' : 'border-gray-200 hover:border-blue-200'}`}>
+                                    ${activeTab === key ? 'border-blue-500 shadow-md' : 'border-gray-200 hover:border-blue-200'}`}>
                                 <div className="flex items-center justify-between">
                                     <div>
                                         <p className="text-sm text-gray-600">{stat.label}</p>
@@ -198,11 +326,10 @@ const RequestsPage = () => {
                                 key={status}
                                 onClick={() => setActiveTab(status as RequestStatus)}
                                 className={`w-full sm:w-auto px-4 py-2 rounded-lg font-medium text-sm transition-all duration-200 
-                    ${activeTab === status
+                                    ${activeTab === status
                                         ? 'bg-blue-50 border border-blue-200 text-blue-700 shadow-sm'
                                         : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
-                                    }`}
-                            >
+                                    }`}>
                                 <StatusBadge status={status as RequestStatus} />
                             </button>
                         ))}
@@ -216,39 +343,26 @@ const RequestsPage = () => {
                 </div>
 
                 <div className="space-y-3 sm:space-y-4 transition-all duration-300">
-                    {patientList.showTo === "doctor" && (
-                        filteredRequests(patientList).map((request) => (
-                            <RequestCard
-                                key={request.id}
-                                request={request as RequestProps}
-                                isPatientRequest={true}
-                                setOpenDoctorContractForm={setOpenDoctorContractForm}
-                            />
-                        ))
-                    )}
+                    {filteredRequests.map((request) => (
+                        <RequestCard
+                            key={request.id}
+                            request={request}
+                            onAccept={handleAccept}
+                            onDecline={handleDecline}
+                        />
+                    ))}
 
-                    {doctorList.showTo === "patient" && (
-                        filteredRequests(doctorList).map((request) => (
-                            <RequestCard
-                                key={request.id}
-                                request={request as RequestProps}
-                                isPatientRequest={false}
-                                setOpenDoctorContractForm={setOpenDoctorContractForm}
-                            />
-                        ))
-                    )}
-
-                    {filteredRequests(patientList).length === 0 && (
+                    {filteredRequests.length === 0 && (
                         <div className="text-center py-16 bg-gray-50 rounded-lg border border-dashed border-gray-200">
                             <div className="max-w-sm mx-auto">
-                                <Icon className={`w-12 h-12 mx-auto mb-4`} iconNode={[]} />
+                                <AlertCircle className="w-12 h-12 mx-auto mb-4 text-gray-400" />
                                 <h3 className="text-lg font-medium text-gray-900 mb-1">No {activeTab} requests</h3>
                                 <p className="text-gray-500">There are no requests in this category at the moment.</p>
                             </div>
                         </div>
                     )}
                 </div>
-            </div>
+            </div >
         </>
     );
 };

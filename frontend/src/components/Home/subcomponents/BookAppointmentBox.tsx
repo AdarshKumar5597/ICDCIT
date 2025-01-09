@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import React from 'react'
 
 const BookAppointmentBox = () => {
@@ -9,12 +10,12 @@ const BookAppointmentBox = () => {
                     <p className="text-blue-100 text-center lg:text-left">Join thousands of patients who trust our platform</p>
                 </div>
                 <div className="flex flex-col sm:flex-row gap-4">
-                    <button className="px-6 py-3 bg-white text-blue-500 rounded-full hover:bg-blue-50 transition-colors font-medium whitespace-nowrap">
+                    <Link href={"/doctors/search"} className="px-6 py-3 bg-white text-blue-500 rounded-full hover:bg-blue-50 transition-colors font-medium whitespace-nowrap">
                         Find a Doctor
-                    </button>
-                    <button className="px-6 py-3 bg-blue-500 text-white rounded-full hover:bg-blue-400 border border-blue-300 transition-colors font-medium whitespace-nowrap">
-                        View Specialists
-                    </button>
+                    </Link>
+                    <Link href={"/chatbot"} className="px-6 py-3 bg-blue-500 text-white rounded-full hover:bg-blue-400 border border-blue-300 transition-colors font-medium whitespace-nowrap">
+                        Diagnose your disease
+                    </Link>
                 </div>
             </div>
         </div>

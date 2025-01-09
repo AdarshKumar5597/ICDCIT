@@ -1,10 +1,44 @@
 import React, { useState } from 'react'
 import { X, Video, Users } from 'lucide-react'
 import { motion } from 'framer-motion'
+import { useHealthcareStore } from '@/zustand/useHealthcareStore'
+import toast from 'react-hot-toast'
 
 const SendRequestForm = ({ onClose }: { onClose: () => void }) => {
     const [meetingType, setMeetingType] = useState<'online' | 'offline'>('online')
-    const [problem, setProblem] = useState('')
+    const [problem, setProblem] = useState<string>('')
+
+    const authData = useHealthcareStore(state => state.authData);
+
+    const handleRequest = async () => {
+        console.log({ meetingType, problem })
+        const requestApiURL = "http://localhost:8080/appointments/create-request";
+
+        const requestOptions = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${authData.token}`
+            },
+            body: JSON.stringify({
+                patientId: authData.userId,
+                doctorId: 1,
+                requirements: problem
+            })
+        }
+
+        const response = await fetch(requestApiURL, requestOptions)
+        const data = await response.json()
+
+        if (response.status !== 200) {
+            toast.error("Error sending request");
+            return;
+        }
+
+        toast.success("Request sent successfully");
+        console.log(data)
+        onClose()
+    }
 
     return (
         <motion.div
@@ -36,8 +70,8 @@ const SendRequestForm = ({ onClose }: { onClose: () => void }) => {
                             <button
                                 onClick={() => setMeetingType('online')}
                                 className={`relative p-4 rounded-xl border-2 transition-all duration-200 ${meetingType === 'online'
-                                        ? 'border-blue-500 bg-blue-50'
-                                        : 'border-gray-200 hover:border-gray-300'
+                                    ? 'border-blue-500 bg-blue-50'
+                                    : 'border-gray-200 hover:border-gray-300'
                                     }`}
                             >
                                 <div className="flex flex-col items-center gap-2">
@@ -54,8 +88,8 @@ const SendRequestForm = ({ onClose }: { onClose: () => void }) => {
                             <button
                                 onClick={() => setMeetingType('offline')}
                                 className={`relative p-4 rounded-xl border-2 transition-all duration-200 ${meetingType === 'offline'
-                                        ? 'border-blue-500 bg-blue-50'
-                                        : 'border-gray-200 hover:border-gray-300'
+                                    ? 'border-blue-500 bg-blue-50'
+                                    : 'border-gray-200 hover:border-gray-300'
                                     }`}
                             >
                                 <div className="flex flex-col items-center gap-2">
@@ -87,6 +121,7 @@ const SendRequestForm = ({ onClose }: { onClose: () => void }) => {
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
                     className="w-full py-2.5 bg-blue-500 text-white font-medium rounded-xl hover:bg-blue-600 focus:ring-4 focus:ring-blue-500/20 transition-all"
+                    onClick={handleRequest}
                 >
                     Send Request
                 </motion.button>

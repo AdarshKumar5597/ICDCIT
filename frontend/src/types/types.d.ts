@@ -19,6 +19,7 @@ export interface Feature {
 export interface AuthData {
   token: string | null;
   userId: number | null;
+  doctorId: number | null;
   role: string | null;
   userName: string | null;
 }
