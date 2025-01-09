@@ -119,4 +119,32 @@ public class AppointmentController {
             );
         }
     }
+
+    @GetMapping("/requests/{userId}")
+    public ResponseEntity<RequestListResponseDto> getRequestsByPatientId(@PathVariable Long patientId) {
+        try {
+            return appointmentService.getRequestsByPatientId(patientId);
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().body(
+                    RequestListResponseDto.builder()
+                            .success(false)
+                            .message("Failed to fetch requests for patient ID " + patientId + ": " + e.getMessage())
+                            .build()
+            );
+        }
+    }
+
+    @PostMapping("/reject-request")
+    public ResponseEntity<RequestResponseDto> rejectRequest(@RequestBody Request request) {
+        try {
+            return appointmentService.rejectRequest(request);
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().body(
+                    RequestResponseDto.builder()
+                            .success(false)
+                            .message("Failed to reject request: " + e.getMessage())
+                            .build()
+            );
+        }
+    }
 }

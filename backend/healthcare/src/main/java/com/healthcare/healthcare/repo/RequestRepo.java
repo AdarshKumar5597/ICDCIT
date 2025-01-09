@@ -14,6 +14,9 @@ public interface RequestRepo extends JpaRepository<Request, Long> {
     @Query(value = "SELECT * FROM request WHERE doctor_id = :doctorId", nativeQuery = true)
     List<Request> findByDoctorID(@Param("doctorId") Long doctorId);
 
+    @Query(value = "SELECT * FROM request WHERE patient_id = :patientId", nativeQuery = true)
+    List<Request> findByPatientID(@Param("patientId") Long patientId);
+
     @Query(value = "SELECT * FROM request WHERE id IN :requestIds", nativeQuery = true)
     List<Request> findAllById(@Param("requestIds") List<Long> requestIds);
 }

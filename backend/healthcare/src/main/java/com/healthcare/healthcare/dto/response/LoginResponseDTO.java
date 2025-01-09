@@ -13,5 +13,6 @@ public class LoginResponseDTO {
     private String role;
     private Boolean success;
     private String userName;
+    private Long doctorId;
 }
 

@@ -72,12 +72,17 @@ public class AuthService {
                 Optional<Users> user = userRepository.findByEmail(email);
 
                 if (user.isPresent()) {
+                    Long doctorId = null;
+                    if (user.get().getRole().equals("DOCTOR")) {
+                        doctorId = doctorRepository.findDoctorIdByUserId(user.get().getUserId());
+                    }
                     return new ResponseEntity<LoginResponseDTO>(LoginResponseDTO.builder()
                             .token(loginRequestDTO.token)
                             .message("Login successful via token")
                             .userId(user.get().getUserId())
                             .role(user.get().getRole().name())
                             .userName(user.get().getUserName())
+                            .doctorId(doctorId)
                             .success(true)
                             .build(), HttpStatus.OK);
                 }
@@ -99,6 +104,24 @@ public class AuthService {
                 );
 
                 String token = jwtTokenProvider.generateToken((UserDetails) authentication.getPrincipal());
+
+                if (user.isPresent()) {
+                    System.out.println("inside");
+                    Long doctorId = null;
+                    if (user.get().getRole().name().equals("DOCTOR")) {
+                        doctorId = doctorRepository.findDoctorIdByUserId(user.get().getUserId());
+                        System.out.println("Doctor id : " + doctorId);
+                    }
+                    return new ResponseEntity<LoginResponseDTO>(LoginResponseDTO.builder()
+                            .token(token)
+                            .message("Login successful")
+                            .userId(user.get().getUserId())
+                            .role(user.get().getRole().name())
+                            .userName(user.get().getUserName())
+                            .doctorId(doctorId)
+                            .success(true)
+                            .build(), HttpStatus.OK);
+                }
 
                 return new ResponseEntity<LoginResponseDTO>(LoginResponseDTO.builder()
                         .token(token)
