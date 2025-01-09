@@ -70,15 +70,17 @@ const Feed = () => {
                     process.env.NEXT_PUBLIC_GNEWS_API_KEY3,
                     process.env.NEXT_PUBLIC_GNEWS_API_KEY4,
                     process.env.NEXT_PUBLIC_GNEWS_API_KEY5,
+                    process.env.NEXT_PUBLIC_GNEWS_API_KEY6,
+                    process.env.NEXT_PUBLIC_GNEWS_API_KEY7,
                 ];
 
                 const newsData = {
-                    featuredNews: await fetchNews("healthcare+innovation", 5, apiKeys[0]!),
+                    featuredNews: await fetchNews("healthcare+innovation", 5, apiKeys[6]!),
                     latestUpdates: await fetchNews("recent+medicine", 6, apiKeys[1]!),
                     trendingTopics: await fetchNews("latest+trends+health", 10, apiKeys[2]!),
                     localNews: await fetchNews("India+health+updates", 8, apiKeys[3]!),
                     research: await fetchNews("medical+research", 6, apiKeys[4]!),
-                    topHeadlines: await fetchTopHeadlines(apiKeys[0]!),
+                    topHeadlines: await fetchTopHeadlines(apiKeys[5]!),
                 };
 
                 setNews(newsData);
@@ -91,7 +93,7 @@ const Feed = () => {
 
         fetchAllNews();
     }, []);
-    // console.log("All news: ", news);
+    console.log("All news: ", news);
 
     if (error) {
         return (
@@ -113,14 +115,19 @@ const Feed = () => {
                 ) : (
                     <>
                         <Suspense fallback={<LoadingSpinner />}>
-                            <section className="mb-12">
-                                <h2 className="text-2xl font-semibold mb-6">Top Health Headlines</h2>
-                                <TopHeadlinesSection articles={news.topHeadlines} />
-                            </section>
-                            <section className="mb-12">
-                                <h2 className="text-2xl font-semibold mb-6">Featured Stories</h2>
-                                <FeaturedNews articles={news.featuredNews} />
-                            </section>
+                            {news.topHeadlines.length > 0 && (
+                                <section className="mb-12">
+                                    <h2 className="text-2xl font-semibold mb-6">Top Health Headlines</h2>
+                                    <TopHeadlinesSection articles={news.topHeadlines} />
+                                </section>
+                            )}
+
+                            {news.featuredNews.length > 0 && (
+                                <section className="mb-12">
+                                    <h2 className="text-2xl font-semibold mb-6">Featured Stories</h2>
+                                    <FeaturedNews articles={news.featuredNews} />
+                                </section>
+                            )}
 
                             <section className="mb-12">
                                 <h2 className="text-2xl font-semibold mb-6">Latest Updates</h2>

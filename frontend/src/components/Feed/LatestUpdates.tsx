@@ -18,6 +18,17 @@ const LatestUpdates: React.FC<{ articles: NewsArticle[] }> = ({ articles }) => {
         }
     }
 
+    if (!articles?.length) {
+        return (
+            <div className="flex items-center justify-center h-48 bg-gray-50 rounded-xl">
+                <div className="text-center text-gray-500">
+                    <Clock className="w-12 h-12 mx-auto mb-4" />
+                    <p>No recent updates available</p>
+                </div>
+            </div>
+        )
+    }
+    
     return (
         <div className="relative group">
             <div

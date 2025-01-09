@@ -1,10 +1,20 @@
 "use client"
 import React from 'react'
-import { TrendingUp, ArrowUpRight } from 'lucide-react'
+import { TrendingUp, ArrowUpRight, AlertCircle } from 'lucide-react'
 import { NewsArticle } from '@/types/types'
 import Link from 'next/link'
 
 const TrendingTopics: React.FC<{ articles: NewsArticle[] }> = ({ articles }) => {
+    if (!articles?.length) {
+        return (
+            <div className="bg-white rounded-xl p-6 shadow-sm">
+                <div className="text-center text-gray-500 py-8">
+                    <AlertCircle className="w-12 h-12 mx-auto mb-4" />
+                    <p>No trending topics available</p>
+                </div>
+            </div>
+        )
+    }
     return (
         <div className="bg-white rounded-xl p-6 shadow-sm">
             {articles.map((article, index) => (

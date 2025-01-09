@@ -1,8 +1,19 @@
 import { NewsArticle } from '@/types/types';
+import { AlertCircle } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 
 const TopHeadlinesSection: React.FC<{ articles: NewsArticle[] }> = ({ articles }) => {
+    if (!articles?.length) {
+        return (
+            <div className="flex items-center justify-center h-64 bg-gray-50 rounded-xl">
+                <div className="text-center text-gray-500">
+                    <AlertCircle className="w-12 h-12 mx-auto mb-4" />
+                    <p>No headlines available at the moment</p>
+                </div>
+            </div>
+        )
+    }
     return (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {articles.map((article, index) => (
