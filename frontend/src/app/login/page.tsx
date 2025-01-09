@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import Link from "next/link";
 import { Eye, EyeOff } from 'lucide-react';
 import toast from 'react-hot-toast';
+// import { useRouter } from 'next/navigation';
 import { useHealthcareStore } from '@/zustand/useHealthcareStore';
 import {useRouter} from "next/navigation";
 
@@ -14,8 +15,8 @@ const Page = () => {
     const [loading, setLoading] = useState(false);
     const setAuthData = useHealthcareStore(state => state.setAuthData);
     const setLoggedIn = useHealthcareStore(state => state.setLoggedIn);
-
     const router = useRouter();
+    // const router = useRouter();
 
     const handleSignIn = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -41,7 +42,7 @@ const Page = () => {
             const data = await response.json();
 
             if (data.success) {
-                setAuthData({ token: data.token, userId: data.userId, doctorId: data.doctorId, role: data.role, userName: data.userName });
+                setAuthData({ token: data.token, userId: data.userId, role: data.role, userName: data.userName, doctorId : data.doctorId });
                 setLoggedIn(true);
                 toast.success('Logged in successfully!');
                 console.log("Logged in successfully!");

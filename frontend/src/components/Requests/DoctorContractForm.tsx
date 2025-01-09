@@ -3,8 +3,9 @@ import { X, Link, IndianRupee, MessageSquare } from 'lucide-react'
 import { motion } from 'framer-motion'
 import { useHealthcareStore } from '@/zustand/useHealthcareStore'
 import toast from 'react-hot-toast'
+import axios from 'axios'
 
-const DoctorContractForm = ({ onClose }: { onClose: () => void }) => {
+const DoctorContractForm = ({ onClose, requestId, fetchRequests }: { onClose: () => void, requestId: string, fetchRequests: () => Promise<void> }) => {
     const [meetingUrl, setMeetingUrl] = useState<string>('')
     const [price, setPrice] = useState<string>('')
     const [feedback, setFeedback] = useState<string>('')
@@ -12,17 +13,17 @@ const DoctorContractForm = ({ onClose }: { onClose: () => void }) => {
 
     const handleSubmit = () => {
         if (!meetingUrl.includes('meet.google.com')) {
-            alert('Please enter a valid Google Meet URL');
+            toast.error('Please enter a valid Google Meet URL');
             return;
         }
 
         if (isNaN(Number(price))) {
-            alert('Please enter a valid price');
+            toast.error('Please enter a valid price');
             return;
         }
 
         const formData: { requestId: number; paymentAmount: number; meetingDetails: string; } = {
-            requestId: 1,
+            requestId: Number(requestId),
             paymentAmount: Number(price),
             meetingDetails: `Meeting URL: ${meetingUrl || 'No URL provided'} | Feedback: ${feedback || 'No feedback given'}`
         };
@@ -33,17 +34,18 @@ const DoctorContractForm = ({ onClose }: { onClose: () => void }) => {
 
     const createContract = async (formData: { requestId: number; paymentAmount: number; meetingDetails: string; }) => {
         const createContractURL = "http://localhost:8080/appointments/create-meeting-contract";
-        const response = await fetch(createContractURL, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${authData?.token}`,
-            },
-            body: JSON.stringify(formData),
-        });
+        const response = await axios.post(createContractURL, formData,
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${authData?.token}`,
+                }
+            }
+        );
 
-        if (response.ok) {
+        if (response.data.success) {
             toast.success('Contract created successfully');
+            await fetchRequests();
             onClose();
         } else {
             toast.error('Failed to create contract');

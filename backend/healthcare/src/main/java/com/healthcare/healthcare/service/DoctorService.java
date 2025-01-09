@@ -1,5 +1,6 @@
 package com.healthcare.healthcare.service;
 
+import com.healthcare.healthcare.dto.DoctorDto;
 import com.healthcare.healthcare.model.Users;
 import com.healthcare.healthcare.repo.DoctorRepository;
 import com.healthcare.healthcare.repo.UserRepository;
@@ -10,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 
 @Service
@@ -44,7 +46,8 @@ public class DoctorService {
 
             List<Users> allDoctors = new ArrayList<>();
             userIds.forEach(userId -> {
-                allDoctors.add(userRepository.findById(userId).get());
+                Users doctor = userRepository.findById(userId).get();
+                allDoctors.add(doctor);
             });
             return new ResponseEntity<>(allDoctors, HttpStatus.OK);
         } catch (Exception e) {

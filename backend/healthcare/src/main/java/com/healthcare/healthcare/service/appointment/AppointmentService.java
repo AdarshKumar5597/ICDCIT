@@ -1,6 +1,6 @@
 package com.healthcare.healthcare.service.appointment;
 
-import com.healthcare.healthcare.dto.response.DoctorListResponseDto;
+import com.healthcare.healthcare.dto.response.DoctorResponseDto;
 import com.healthcare.healthcare.dto.response.MeetingContractResponseDto;
 import com.healthcare.healthcare.dto.response.RequestListResponseDto;
 import com.healthcare.healthcare.dto.response.RequestResponseDto;
@@ -13,12 +13,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
+@Transactional
 public class AppointmentService {
 
     @Autowired
@@ -35,6 +37,9 @@ public class AppointmentService {
 
     @Autowired
     private MeetingContractRepo meetingContractRepo;
+
+    @Autowired
+    private UserRepository userRepository;
 
     // Create a request
     public ResponseEntity<RequestResponseDto> createRequest(Request request) {
@@ -62,6 +67,12 @@ public class AppointmentService {
     // Create a meeting contract
     public ResponseEntity<MeetingContractResponseDto> createMeetingContract(MeetingContracts contract) {
         try {
+            Optional<Request> requestOpt = requestRepo.findById(contract.getRequestId());
+            if (requestOpt.isPresent()) {
+                Request request = requestOpt.get();
+                request.setStatus(RequestStatus.ACCEPTED);
+                requestRepo.save(request);
+            }
             contract.setStatus(Status.PENDING);
             contract.setCreatedAt(new Date());
             contract.setCompletedByDoctor(false);
@@ -126,26 +137,35 @@ public class AppointmentService {
     }
 
     // Fetch all doctor details based on a proficiency or list of proficiencies
-    public ResponseEntity<DoctorListResponseDto> getDoctorsByProficiencies(List<String> proficiencies) {
+    public ResponseEntity<List<DoctorResponseDto>> getDoctorsByProficiencies(List<String> proficiencies) {
         try {
             List<Long> proficiencyIds = proficiencyRepo.findByProficiencyNameIn(proficiencies)
                     .stream().map(Proficiency::getProficiencyId).collect(Collectors.toList());
             List<Long> doctorIds = doctorProficiencyRepo.findDoctorIdsByProficiencyIds(proficiencyIds);
             List<Doctor> doctors = doctorRepo.findByProficiencyIds(doctorIds);
+            List<DoctorResponseDto> doctorResponseDtoList = new ArrayList<>();
+            doctors.forEach(doctor -> {
+                Users user = userRepository.findById(doctor.getUserId()).get();
+                doctorResponseDtoList.add(DoctorResponseDto.builder()
+                                .userId(user.getUserId())
+                                .firstName(user.getFirstName())
+                                .lastName(user.getLastName())
+                                .email(user.getEmail())
+                                .password(user.getPassword())
+                                .role(user.getRole().name())
+                                .profileImage(user.getProfileImage())
+                                .bio(user.getBio())
+                                .createdAt(user.getCreatedAt())
+                                .rating(user.getRating())
+                                .reviewCount(user.getReviewCount())
+                                .doctorId(doctor.getDoctorId())
+                        .build());
+            });
             return ResponseEntity.ok(
-                    DoctorListResponseDto.builder()
-                            .success(true)
-                            .message("Doctors fetched successfully")
-                            .doctors(doctors)
-                            .build()
+                    doctorResponseDtoList
             );
         } catch (Exception e) {
-            return ResponseEntity.internalServerError().body(
-                    DoctorListResponseDto.builder()
-                            .success(false)
-                            .message("Failed to fetch doctors: " + e.getMessage())
-                            .build()
-            );
+            return ResponseEntity.internalServerError().body(new ArrayList<>());
         }
     }
 
@@ -276,18 +296,30 @@ public class AppointmentService {
         }
     }
 
-    public ResponseEntity<RequestResponseDto> rejectRequest(Request request) {
+    public ResponseEntity<RequestResponseDto> rejectRequest(Long requestId) {
         try {
-            request.setStatus(RequestStatus.REJECTED);
-            request.setCreatedAt(new Date());
-            Request savedRequest = requestRepo.save(request);
+            Optional<Request> requestOpt = requestRepo.findById(requestId);
+            if (requestOpt.isPresent()) {
+                Request request = requestOpt.get();
+                request.setStatus(RequestStatus.REJECTED);
+                request.setCreatedAt(new Date());
+                Request savedRequest = requestRepo.save(request);
+
+                return ResponseEntity.ok(
+                        RequestResponseDto.builder()
+                                .success(true)
+                                .message("Request rejected successfully")
+                                .request(savedRequest)
+                                .build()
+                );
+            }
             return ResponseEntity.ok(
                     RequestResponseDto.builder()
                             .success(true)
-                            .message("Request rejected successfully")
-                            .request(savedRequest)
+                            .message("Request rejected Unsuccessful")
                             .build()
             );
+
         } catch (Exception e) {
             return ResponseEntity.internalServerError().body(
                     RequestResponseDto.builder()
