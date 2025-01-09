@@ -105,6 +105,26 @@ public class AppointmentService {
         }
     }
 
+    public ResponseEntity<RequestListResponseDto> getRequestsByPatientId(Long patientId) {
+        try {
+            List<Request> requests = requestRepo.findByPatientID(patientId);
+            return ResponseEntity.ok(
+                    RequestListResponseDto.builder()
+                            .success(true)
+                            .message("Requests fetched successfully")
+                            .requests(requests)
+                            .build()
+            );
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().body(
+                    RequestListResponseDto.builder()
+                            .success(false)
+                            .message("Failed to fetch requests: " + e.getMessage())
+                            .build()
+            );
+        }
+    }
+
     // Fetch all doctor details based on a proficiency or list of proficiencies
     public ResponseEntity<DoctorListResponseDto> getDoctorsByProficiencies(List<String> proficiencies) {
         try {
@@ -179,6 +199,15 @@ public class AppointmentService {
                 contract.setCompletedByPatient(true);
                 MeetingContracts updatedContract = meetingContractRepo.save(contract);
 
+                if (updatedContract.getCompletedByPatient() && updatedContract.getCompletedByDoctor()) {
+                    Optional<Request> request = requestRepo.findById(updatedContract.getRequestId());
+                    if (request.isPresent()) {
+                        Request requestToBeUpdated = request.get();
+                        requestToBeUpdated.setStatus(RequestStatus.COMPLETED);
+                        requestRepo.save(requestToBeUpdated);
+                    }
+                }
+
                 return ResponseEntity.ok(
                         MeetingContractResponseDto.builder()
                                 .success(true)
@@ -213,6 +242,15 @@ public class AppointmentService {
                 contract.setCompletedByDoctor(true);
                 MeetingContracts updatedContract = meetingContractRepo.save(contract);
 
+                if (updatedContract.getCompletedByPatient() && updatedContract.getCompletedByDoctor()) {
+                    Optional<Request> request = requestRepo.findById(updatedContract.getRequestId());
+                    if (request.isPresent()) {
+                        Request requestToBeUpdated = request.get();
+                        requestToBeUpdated.setStatus(RequestStatus.COMPLETED);
+                        requestRepo.save(requestToBeUpdated);
+                    }
+                }
+
                 return ResponseEntity.ok(
                         MeetingContractResponseDto.builder()
                                 .success(true)
@@ -233,6 +271,28 @@ public class AppointmentService {
                     MeetingContractResponseDto.builder()
                             .success(false)
                             .message("Failed to mark meeting as completed by doctor: " + e.getMessage())
+                            .build()
+            );
+        }
+    }
+
+    public ResponseEntity<RequestResponseDto> rejectRequest(Request request) {
+        try {
+            request.setStatus(RequestStatus.REJECTED);
+            request.setCreatedAt(new Date());
+            Request savedRequest = requestRepo.save(request);
+            return ResponseEntity.ok(
+                    RequestResponseDto.builder()
+                            .success(true)
+                            .message("Request rejected successfully")
+                            .request(savedRequest)
+                            .build()
+            );
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().body(
+                    RequestResponseDto.builder()
+                            .success(false)
+                            .message("Failed to reject request: " + e.getMessage())
                             .build()
             );
         }

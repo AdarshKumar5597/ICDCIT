@@ -119,7 +119,7 @@ public class AuthController {
         try {
             // Save the profile photo
             userService.saveProfilePhoto(userId, profilePhoto);
-            return ResponseEntity.ok("Profile photo uploaded successfully");
+            return userService.getUserById(userId);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("Failed to upload profile photo: " + e.getMessage());
