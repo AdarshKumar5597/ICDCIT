@@ -227,9 +227,6 @@ export default function DoctorsPage() {
                                                         } className="flex-1 bg-blue-500 text-white px-8 py-3 rounded-full hover:bg-blue-600 transition-all duration-300 font-medium">
                                                             Book Appointment
                                                         </button>
-                                                        <button className="flex-1 border-2 border-blue-500 text-blue-500 px-8 py-3 rounded-full hover:bg-blue-50 transition-all duration-300 font-medium">
-                                                            View Full Profile
-                                                        </button>
                                                     </div>
                                                 </div>
                                             </div>
