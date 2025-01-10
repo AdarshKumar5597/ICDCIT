@@ -8,8 +8,11 @@ from langchain_community.chat_message_histories import ChatMessageHistory
 from langchain.prompts import PromptTemplate
 from langchain_groq import ChatGroq
 
+from utils.model_updater import fetch_all_news
+
 MEDICAL_ASSISTANT_PROMPT = """You are a helpful medical assistant. 
 You have access to the following medical document text (and prior conversation). 
+You also have access to updated health and diseases news articles.
 Use this information to answer the user's question accurately and concisely.
 If you do not find relevant context or the question is out of scope (e.g., about celebrities), 
 politely respond with a refusal, stating you lack sufficient information.
@@ -48,7 +51,9 @@ def getModelChain():
     for page in pdf_reader.pages:
         page_text = page.extract_text() or ""
         pdf_text += page_text
-
+    news_data = fetch_all_news()
+    print("News data fetched successfully.", news_data)
+    pdf_text += "\n NEWS: " + news_data
     text_splitter = RecursiveCharacterTextSplitter(
         chunk_size=1000,
         chunk_overlap=150

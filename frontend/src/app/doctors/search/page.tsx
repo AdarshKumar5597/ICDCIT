@@ -13,7 +13,7 @@ import { useHealthcareStore } from '@/zustand/useHealthcareStore';
 
 export default function DoctorsPage() {
     const [searchQuery, setSearchQuery] = useState('');
-    const [doctors, setDoctors] = useState<Doctor[]>(mockDoctors);
+    const [doctors, setDoctors] = useState<Doctor[]>([]);
     const [doctorId, setDoctorId] = useState<number>(0);
 
     const [hasMore, setHasMore] = useState(true);
@@ -25,6 +25,7 @@ export default function DoctorsPage() {
         firstName: string;
         lastName: string;
         userName: string;
+        proficiencies: string[];
         email: string;
         password: string;
         role: 'ADMIN' | 'USER' | 'DOCTOR';  // Adjust roles based on your actual enum values
@@ -39,14 +40,19 @@ export default function DoctorsPage() {
     const [fetchedDoctors, setFetchedDoctors] = useState<User[]>([]);
     const type = 'image/jpg';
 
-    const fetchDoctorsByProficiencies = async (proficiencies: string[]) => {
+    const fetchDoctorsByProficiencies = async (query: string) => {
 
         // Make request to flask to fetch profociency list based on query.
-        // -----------------flask api call ----------------------
-        
+        // ----------------- flask api call ----------------------
+        if(!query) return;
+        const proficienciesResponse = await axios.post('http://localhost:5000/proficiency', {message : query}, {
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        });
 
-
-        const response = await axios.post('http://localhost:8080/appointments/doctors-by-proficiencies', {proficiencies : []}, {
+        console.log(proficienciesResponse.data.proficiencies)
+        const response= await axios.post('http://localhost:8080/appointments/doctors-by-proficiencies', {proficiencies : proficienciesResponse.data.proficiencies}, {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${authData?.token}}`
@@ -63,7 +69,7 @@ export default function DoctorsPage() {
     }
 
     const fetchMoreDoctors = async () => {
-
+        if(authData.token === null) return;
         const response = await axios.get('http://localhost:8080/doctors/all-doctors', {
             headers: {
                 'Content-Type': 'application/json',
@@ -71,23 +77,30 @@ export default function DoctorsPage() {
             }
         });
 
-        if (response.data.length > 0) {
+        // if (response.data.length > 0) {
             setFetchedDoctors(response.data);
-        }
+        // }
 
         setTimeout(() => {
             setHasMore(false);
         }, 1500);
     };
 
+
     useEffect(() => {
         //fetch doctors from API
         fetchMoreDoctors();
 
-        if (fetchMoreDoctors.length === 0) {
-            setDoctors(mockDoctors);
+        // if (fetchMoreDoctors.length === 0) {
+        //     setDoctors(mockDoctors);
+        // }
+    }, [authData.token]);
+
+    useEffect(() => {
+        if(searchQuery.length === 0) {
+            fetchMoreDoctors();
         }
-    }, []);
+    }, [searchQuery]);
 
     return (
         <>
@@ -121,11 +134,12 @@ export default function DoctorsPage() {
                                 className="w-full px-6 py-4 rounded-full border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-sm pl-12"
                                 value={searchQuery}
                                 onChange={(e) => setSearchQuery(e.target.value)}
+                                onKeyDown={(e) => e.key === 'Enter' && fetchDoctorsByProficiencies(searchQuery)}
                             />
                             <svg className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                             </svg>
-                            <button className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-blue-500 text-white px-6 py-3 rounded-full hover:bg-blue-600 transition-all duration-300 ease-in-out">
+                            <button className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-blue-500 text-white px-6 py-3 rounded-full hover:bg-blue-600 transition-all duration-300 ease-in-out" onClick={()=>fetchDoctorsByProficiencies(searchQuery)}>
                                 Search
                             </button>
                         </div>
@@ -157,7 +171,7 @@ export default function DoctorsPage() {
                                                 <div className="w-full lg:w-56 h-56 lg:h-64 shrink-0 relative">
                                                     <div className="aspect-square relative w-full h-full rounded-xl overflow-hidden">
                                                         <Image
-                                                            src={doctors[id]?.profilePhoto}
+                                                            src={mockDoctors[id]?.profilePhoto}
                                                             alt={doctor.firstName + " " + doctor.lastName}
                                                             fill
                                                             className="object-cover"
@@ -267,7 +281,7 @@ export default function DoctorsPage() {
                                                         <p className="text-gray-600 mb-6">{doctor.bio}</p>
 
                                                         <div className="flex flex-wrap gap-2 mb-6">
-                                                            {doctor.proficiencies.map((prof, index) => (
+                                                            {doctor.proficiencies?.map((prof, index) => (
                                                                 <span
                                                                     key={index}
                                                                     className="px-4 py-1.5 bg-blue-50 text-blue-700 rounded-full text-sm font-medium hover:bg-blue-100 transition-colors"
